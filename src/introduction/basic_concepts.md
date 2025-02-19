@@ -1,51 +1,36 @@
-# Basic concepts
+# Основные концепции
 
-Let's briefly get over some basic concepts of the engine, there's not much, but all of them are crucial to understand
-design decisions made in the engine.
+Давайте кратко рассмотрим основные концепции движка. Их не так много, но все они крайне важны для понимания принятых в движке решений.
 
-## Classic OOP
+## Классический ООП
 
-The engine uses somewhat classic OOP with composition over inheritance - complex objects in the engine can be constructed
-using simpler objects.
+Движок использует классический подход ООП с композицией вместо наследования — сложные объекты в движке могут быть построены из более простых объектов.
 
-## Scenes
+## Сцены
 
-In Fyrox, you break down your game in a set of reusable scenes. Pretty much anything can be a scene: a player, a weapon,
-a bot, level parts, etc. Scenes can be nested one into another, this helps you to break down complex scenes into reusable
-parts. Scene in Fyrox is also plays a role of prefab, there's pretty much no difference between them.
+В Fyrox вы разбиваете свою игру на набор переиспользуемых сцен. Практически всё может быть сценой: игрок, оружие, бот, части уровня и т.д. Сцены могут быть вложены друг в друга, что помогает разбивать сложные сцены на переиспользуемые части. Сцена в Fyrox также играет роль префаба, между ними практически нет разницы.
 
-## Nodes and Scene Graph
+## Узлы и граф сцены
 
-A scene is made of one or more nodes (every scene must have at least one root node, to which everything else is attached).
-Scene node contains specific set of properties as well as _one_ optional script instance which is responsible for custom
-game logic. 
+Сцена состоит из одного или нескольких узлов (каждая сцена должна иметь как минимум один корневой узел, к которому прикреплены все остальные элементы). Узел сцены содержит определённый набор свойств, а также _один_ опциональный экземпляр скрипта, который отвечает за пользовательскую игровую логику.
 
-Typical structure of a scene node could be represented by the following example. The base object for every scene node is 
-a `Base` node, it contains a transform, a list of children, etc. A more complex node, that _extends_ functionality of the `Base` 
-node stores an instance of `Base` inside of them. For example, a `Mesh` node is a `Base` node _plus_ some specific info 
-(a list of surfaces, material, etc.). The "hierarchy" depth is unlimited - a `Light` node in the engine is an enumeration 
-of three possible types of light source. `Directional`, `Point`, and `Spot` light sources both use `BaseLight` node,
-which in its turn contains `Base` node inside. Graphically it can be represented like so:
+Типичная структура узла сцены может быть представлена следующим примером. Базовым объектом для каждого узла сцены является узел `Base`, который содержит трансформацию, список дочерних элементов и т.д. Более сложный узел, который _расширяет_ функциональность узла `Base`, хранит экземпляр `Base` внутри себя. Например, узел `Mesh` — это узел `Base` _плюс_ некоторая специфическая информация (список поверхностей, материал и т.д.). Глубина "иерархии" не ограничена — узел `Light` в движке представляет собой перечисление трёх возможных типов источников света. Источники света `Directional`, `Point` и `Spot` используют узел `BaseLight`, который, в свою очередь, содержит узел `Base`. Графически это можно представить следующим образом:
 
 ```text
 `Point`
-|__ Point Light Properties (radius, etc.)
+|__ Свойства Point (радиус и т.д.)
 |__`BaseLight`
-   |__ Base Light Properties (color, etc.)
+   |__ Свойства BaseLight (цвет и т.д.)
    |__`Base`
-      |__ Base Node Properties (transform, children nodes, etc.)
+      |__ Свойства узла Base (трансформация, дочерние узлы и т.д.)
 ```
 
-As you can see, this forms the nice tree (graph) that shows what the object contains. This is very natural way of describing
-scene nodes, it gives you the full power of building an object of any complexity.
+Как видите, это формирует удобное дерево (граф), которое показывает, из чего состоит объект. Это очень естественный способ описания узлов сцены, который даёт вам полную свободу для создания объектов любой сложности.
 
-## Plugins
+## Плагины
 
-Plugin is a container for "global" game data and logic, its main usage is to provide scripts with some data and to 
-manage global game state.
+Плагин — это контейнер для "глобальных" данных и логики игры. Его основное назначение — предоставлять скриптам доступ к данным и управлять глобальным состоянием игры.
 
-## Scripts
+## Скрипты
 
-Script - is a separate piece of data and logic, that can be attached to scene nodes. This is primary (but not single)
-way of adding custom game logic.
-
+Скрипт — это отдельный фрагмент данных и логики, который может быть прикреплён к узлам сцены. Это основной (но не единственный) способ добавления пользовательской игровой логики.

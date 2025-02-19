@@ -1,86 +1,68 @@
-# Project Manager
+# Менеджер проектов
 
-This chapter explains how to use various parts of the project manager, what it can do in general, and why you should
-prefer it over good ol' console commands.
+Эта глава объясняет, как использовать различные части менеджера проектов, что он может делать в целом, и почему вам стоит предпочесть его старым добрым консольным командам.
 
-## Overview
+## Обзор
 
-![project manager](project_manager.png)
+![менеджер проектов](project_manager.png)
 
-Project manager is a tool that is able to create projects, import existing projects, configure and build them, etc. Its 
-main purpose is to reduce the complexity of project management to the minimum. For example, a new project can be created
-and built in a few clicks. While the same is possible to be done manually, it requires some juggling with console commands
-that in some cases (code hot reloading) contains a lot of unexpected parts.
+Менеджер проектов — это инструмент, который позволяет создавать проекты, импортировать существующие проекты, настраивать и собирать их и многое другое. Его основная цель — свести сложность управления проектами к минимуму. Например, новый проект можно создать и собрать в несколько кликов. Хотя то же самое можно сделать вручную, это требует определённых манипуляций с консольными командами, которые в некоторых случаях (например, горячая перезагрузка кода) содержат множество неожиданных моментов.
 
-## Creating a New Project
+## Создание нового проекта
 
-To create a new project simply click on `+Create` button, and you should see the following window:
+Чтобы создать новый проект, просто нажмите кнопку `+Create`, и вы увидите следующее окно:
 
-![project manager wizard](pm_create_project.png)
+![мастер создания проекта](pm_create_project.png)
 
-This window contains four major options for your project:
+Это окно содержит четыре основные опции для вашего проекта:
 
-- `Path` - specifies a parent directory in which a project's directory will be created and then filled with the
-project's files.
-- `Name` - project name, it must follow specific rules. The name must start either from a letter or underscore (`_`),
-the rest of the characters must be letters, numbers, hyphens (`-`), underscore (`_`). The project manager performs 
-name validation for you:
+- `Path` — указывает родительскую директорию, в которой будет создана папка проекта и заполнена файлами проекта.
+- `Name` — имя проекта, оно должно соответствовать определённым правилам. Имя должно начинаться с буквы или символа подчёркивания (`_`), остальные символы могут быть буквами, цифрами, дефисами (`-`) или символами подчёркивания (`_`). Менеджер проектов автоматически проверяет корректность имени:
 
-![project manager name validation](pm_validation.png)
+![проверка имени проекта](pm_validation.png)
 
-- `Style` - defines initial content of the default scene. In general, it does not restrict you to a specific number
-of dimensions—you can still use both 2D and 3D or mix them.
-- `Version Control` - allows you to select a desired version control system (VCS) for your project. It is Git by default,
-but you can select any VCS you like or disable it completely by selecting `None` option.
+- `Style` — определяет начальное содержимое сцены по умолчанию. В целом, это не ограничивает вас определённым количеством измерений — вы можете использовать как 2D, так и 3D или смешивать их.
+- `Version Control` — позволяет выбрать желаемую систему контроля версий (VCS) для вашего проекта. По умолчанию это Git, но вы можете выбрать любую VCS или отключить её, выбрав опцию `None`.
 
-Every project has its own item in the list of projects, it shows important information about the project:
+Каждый проект имеет свой элемент в списке проектов, который отображает важную информацию о проекте:
 
-![project info](pm_project_info.png)
+![информация о проекте](pm_project_info.png)
 
-1. Project name.
-2. Full path to the project.
-3. Version of the engine the project uses.
-4. Code hot reloading marker. 
+1. Имя проекта.
+2. Полный путь к проекту.
+3. Версия движка, используемая в проекте.
+4. Маркер горячей перезагрузки кода.
 
-## Project Management
+## Управление проектом
 
-![project management](pm_management.png)
+![управление проектом](pm_management.png)
 
-When a project is selected, it is possible to manage it using the toolbar on the right side. The available options 
-are the following:
+Когда проект выбран, им можно управлять с помощью панели инструментов справа. Доступные опции следующие:
 
-- `Hot Reloading` - allows you to enable or disable code hot reloading. Code hot reloading is a handy feature
-for rapid prototyping. See [the respective chapter](./hot_reloading.md) for more info.
-- `Edit` - builds and runs the editor.
-- `Run` - builds and runs the game. Final builds of the game should be produced using the project exporter tool of the
-editor. See [the respective chapter](../shipping/shipping.md) for more info. 
-- `Open IDE` - opens the specified IDE to edit the project's source code. 
-- `Upgrade` - opens a separate tool that allows you to select a desired engine version. See 
-[the section below](#project-upgrade) for more info.
-- `Clean` - removes all build artifacts from the project. Essentially it just runs `cargo clean` command for your project.
-- `Locate` - opens the project directory in the file system explorer.
-- `Delete` - deletes the project. This is a destructive operation, and it is "gated" with a separate confirmation dialog.
-- `Exclude` - removes the project from the list of projects.
+- `Hot Reloading` — позволяет включить или отключить горячую перезагрузку кода. Горячая перезагрузка кода — это удобная функция для быстрого прототипирования. Подробнее см. в [соответствующей главе](./hot_reloading.md).
+- `Edit` — собирает и запускает редактор.
+- `Run` — собирает и запускает игру. Финальные сборки игры должны создаваться с помощью инструмента экспорта проектов в редакторе. Подробнее см. в [соответствующей главе](../shipping/shipping.md).
+- `Open IDE` — открывает указанную IDE для редактирования исходного кода проекта.
+- `Upgrade` — открывает отдельный инструмент, который позволяет выбрать желаемую версию движка. Подробнее см. в [разделе ниже](#обновление-проекта).
+- `Clean` — удаляет все артефакты сборки из проекта. По сути, это просто выполнение команды `cargo clean` для вашего проекта.
+- `Locate` — открывает директорию проекта в проводнике файловой системы.
+- `Delete` — удаляет проект. Это разрушительная операция, и она защищена отдельным диалогом подтверждения.
+- `Exclude` — удаляет проект из списка проектов.
 
-## Project Upgrade
+## Обновление проекта
 
-![project manager upgrade](pm_upgrade.png)
+![обновление проекта](pm_upgrade.png)
 
-This tiny tool allows you to select a desired version of the engine in a few clicks. Available options are the following:
+Этот небольшой инструмент позволяет выбрать желаемую версию движка в несколько кликов. Доступные опции следующие:
 
-- `Specific` - specific version of the engine. The version must comply with semver rules (for example - `0.36.0`).
-- `Nightly` - latest possible _potentially unstable_ version of the engine directly from the development branch (`master`)
-of the [GitHub repo](https://github.com/FyroxEngine/Fyrox). Use it if you need latest features and bugfixes.
-- `Local` - special option that allows you to switch the engine to local copy of the engine repository. The engine must
-be located in the parent folder of your project's directory.
+- `Specific` — конкретная версия движка. Версия должна соответствовать правилам semver (например, `0.36.0`).
+- `Nightly` — последняя _потенциально нестабильная_ версия движка напрямую из ветки разработки (`master`) [репозитория на GitHub](https://github.com/FyroxEngine/Fyrox). Используйте её, если вам нужны последние функции и исправления ошибок.
+- `Local` — специальная опция, которая позволяет переключить движок на локальную копию репозитория движка. Движок должен находиться в родительской папке директории вашего проекта.
 
-## Settings
+## Настройки
 
-![project manager settings](pm_settings.png)
+![настройки менеджера проектов](pm_settings.png)
 
-Project manager has its own settings, it is not much for now, but it will grow over time. Currently, there's only one
-option—an IDE that can be used to edit source code of your project.
+Менеджер проектов имеет свои настройки, пока их не так много, но со временем их количество будет расти. В настоящее время доступна только одна опция — IDE, которая может использоваться для редактирования исходного кода вашего проекта.
 
-All that you need to is to specify a name of the executable of your IDE. The image above uses `RustRover` IDE. Keep in
-mind, that you must modify your `PATH` environment variable to include full path to the specified executable, otherwise
-this option will not work correctly!
+Всё, что вам нужно сделать, — это указать имя исполняемого файла вашей IDE. На изображении выше используется IDE `RustRover`. Учтите, что вам необходимо изменить переменную окружения `PATH`, чтобы включить полный путь к указанному исполняемому файлу, иначе эта опция не будет работать корректно!

@@ -1,40 +1,21 @@
-# Design Philosophy and Goals
+# Философия и цели проектирования
 
-Let's talk a bit about design philosophy and goals of the engine. Development of the engine started in the beginning
-of 2019 as a hobby project to learn Rust, and it quickly showed that Rust can be a game changer in the game development
-industry. Initially, the engine was just a port of [an engine](https://github.com/mrDIMAS/DmitrysEngine) that is written 
-in C. At the beginning, it was very interesting to build such complex thing as game engine in such low level language without
-any safety guarantees. After a year of development it became annoying to fix memory related issues (memory corruption,
-leaks, etc.), luckily at that time Rust's popularity grew, and it showed on my radar. I ([@mrDIMAS](https://github.com/mrDIMAS)) 
-was able to port the engine to it in less than a year. Stability has improved dramatically, no more random crashes, 
-performance was at the same or better levels - time invested in learning new language was paid off. Development speed 
-does not degrade over time as it was in C, it is very easy to manage growing project.
+Давайте поговорим немного о философии и целях проектирования движка. Разработка движка началась в начале 2019 года как хобби-проект для изучения Rust, и он быстро показал, что Rust может стать настоящим прорывом в индустрии разработки игр. Изначально движок был просто портом [движка](https://github.com/mrDIMAS/DmitrysEngine), написанного на C. В начале было очень интересно создавать такую сложную вещь, как игровой движок, на таком низкоуровневом языке без каких-либо гарантий безопасности. Через год разработки стало раздражать исправление проблем, связанных с памятью (повреждение памяти, утечки и т.д.). К счастью, в то время популярность Rust росла, и он попал в поле моего зрения. Я ([@mrDIMAS](https://github.com/mrDIMAS)) смог портировать движок на Rust менее чем за год. Стабильность значительно улучшилась, больше не было случайных сбоев, производительность осталась на том же или даже более высоком уровне — время, вложенное в изучение нового языка, окупилось. Скорость разработки не снижается со временем, как это было в C, и стало очень легко управлять растущим проектом.
 
-## Safety
+## Безопасность
 
-One of the main goals in the development of the engine is to provide a high level of safety. What does this mean? 
-In short: protection from memory-safety related bugs. This does not include any logic errors, but when your game is free 
-of random crashes due to memory unsafety it is much easier to fix logic bugs, because you don't have to think about
-potentially corrupted memory.
+Одна из главных целей разработки движка — обеспечение высокого уровня безопасности. Что это значит? Вкратце: защита от ошибок, связанных с памятью. Это не включает логические ошибки, но когда ваша игра свободна от случайных сбоев из-за проблем с памятью, исправлять логические ошибки становится намного проще, потому что вам не нужно думать о потенциально повреждённой памяти.
 
-Safety also dictates the architectural design decisions of your game. The typical callback hell, that is possible to do in
-many other languages, is very tedious to implement in Rust. It is possible, but it requires quite a lot of manual work
-which quickly tells you that you're doing it wrong.
+Безопасность также диктует архитектурные решения при проектировании игры. Типичный "ад колбэков", который возможен во многих других языках, очень сложно реализовать в Rust. Это возможно, но требует значительных усилий, что быстро даёт понять, что вы делаете что-то не так.
 
-## Performance
+## Производительность
 
-Game engines are usually built using system-level programming languages, which provide peak performance levels. Fyrox is not
-an exception. One of its design goals is to provide high levels of performance by default, leaving an opportunity for
-adding custom solutions for performance-critical places.
+Игровые движки обычно создаются с использованием системных языков программирования, которые обеспечивают максимальную производительность. Fyrox не является исключением. Одна из его целей — предоставить высокий уровень производительности "из коробки", оставляя возможность для добавления пользовательских решений в критически важных для производительности местах.
 
-## Ease of use
+## Простота использования
 
-Another very important part is that the engine should be friendly to newcomers. It should lower the entry threshold, not make
-it worse. Fyrox uses well known and battle-tested concepts, thus making it easier to make games with it. On the other hand,
-it can still be extended with anything you need - it tries to be as good for veterans of the game industry as it is for 
-newcomers.
+Ещё одна очень важная часть — движок должен быть дружелюбным к новичкам. Он должен снижать порог входа, а не повышать его. Fyrox использует хорошо известные и проверенные временем концепции, что упрощает создание игр с его помощью. С другой стороны, он всё ещё может быть расширен всем, что вам нужно — он старается быть таким же полезным для ветеранов игровой индустрии, как и для новичков.
 
-## Battle-tested
+## Проверен на практике
 
-Fyrox has large projects built on it, which helps with understanding the real needs of a general-purpose game engine. It also helps
-reveal weak spots in the design and fix them.
+На Fyrox созданы крупные проекты, что помогает понять реальные потребности универсального игрового движка. Это также помогает выявить слабые места в дизайне и исправить их.

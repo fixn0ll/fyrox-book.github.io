@@ -1,189 +1,182 @@
-# Introduction to Fyrox
+# Введение в Fyrox
 
-Fyrox is a feature-rich, general purpose game engine that is suitable for any kind of games. It is capable to power
-games with small- or medium-sized worlds, large-sized world most likely will require some manual work. 
+Fyrox — это многофункциональный игровой движок общего назначения, подходящий для создания игр любого жанра. Он способен работать с играми, имеющими небольшие или средние по размеру миры, в то время как для крупных миров может потребоваться дополнительная ручная работа.
 
-Games made with the engine are capable to run on desktop platforms (PC, Mac, Linux) and Web (WebAssembly). Mobile is
-planned for future releases.
+Игры, созданные на этом движке, могут запускаться на настольных платформах (PC, Mac, Linux) и в вебе (WebAssembly). Поддержка мобильных платформ запланирована в будущих релизах.
 
-## What can the engine do?
+## Что может этот движок?
 
-You can create pretty much any kind of game or interactive applications. Here's some examples of what the engine can 
-do:
+Вы можете создавать практически любые игры или интерактивные приложения. Вот несколько примеров того, что возможно с этим движком:
 
 ![Station Iapetus](game_example1.jpg)
 ![Fish Folly](game_example2.jpg)
 ![2D Platformer](game_example3.jpg)
 
-## How does the engine work?
+## Как работает движок?
 
-The engine consists of two parts that you'll be actively using: the framework and the editor. The framework is a 
-foundation of the engine, it manages rendering, sound, scripts, plugins, etc. While the editor contains lots of tools 
-that can be used to create game worlds, manage assets, edit game objects, scripts and more.
+Движок состоит из двух частей, которые вы будете активно использовать: фреймворка и редактора. Фреймворк — это основа движка, он управляет рендерингом, звуком, скриптами, плагинами и т.д. Редактор содержит множество инструментов для создания игровых миров, управления ассетами, редактирования игровых объектов, скриптов и многого другого.
 
 ![Fish Folly](editor.png)
 
-## Programming languages
+## Языки программирования
 
-Everything of your game can be written entirely in Rust, utilizing its safety guarantees as well as speed. However, it
-is possible to use any scripting language you want, but that's have no built-in support, and you need to implement this
-manually.
+Весь код вашей игры может быть написан исключительно на Rust, что обеспечивает безопасность и высокую производительность. Однако вы можете использовать любой язык сценариев, хотя для этого потребуется ручная реализация, так как встроенной поддержки нет.
 
-## Engine Features
+## Возможности движка
 
-This is a more or less complete (yet, it can be outdated) list of engine features:
+Это более или менее полный (хотя, возможно, устаревший) список возможностей движка:
 
-### General
+### Общие
 
-- Exceptional safety, reliability, and speed.
-- PC (Windows, Linux, macOS), Android, [Web (WebAssembly) support](https://fyrox.rs/examples).
-- Modern, PBR rendering pipeline.
-- Comprehensive [documentation](https://docs.rs/Fyrox).
-- [Guide book](https://fyrox-book.github.io)
-- 2D support.
-- Integrated editor.
-- Fast iterative compilation.
-- Classic object-oriented design.
-- Lots of examples.
+- Высокая безопасность, надежность и производительность.
+- Поддержка PC (Windows, Linux, macOS), Android и [веба (WebAssembly)](https://fyrox.rs/examples).
+- Современный PBR-рендеринг.
+- Подробная [документация](https://docs.rs/Fyrox).
+- [Руководство](https://fyrox-book.github.io).
+- Поддержка 2D.
+- Встроенный редактор.
+- Быстрая итеративная компиляция.
+- Классический объектно-ориентированный дизайн.
+- Множество примеров.
 
-### Rendering
+### Рендеринг
 
-- Custom shaders, materials, and rendering techniques.
-- Physically-based rendering.
-- Metallic workflow.
-- High dynamic range (HDR) rendering.
-- Tone mapping.
-- Color grading.
-- Auto-exposure.
-- Gamma correction.
-- Deferred shading.
-- Directional light.
-- Point lights + shadows.
-- Spotlights + shadows.
-- Screen-Space Ambient Occlusion (SSAO).
-- Soft shadows.
-- Volumetric light (spot, point).
-- Batching.
-- Instancing.
-- Fast Approximate Anti-Aliasing (FXAA).
-- Normal mapping.
-- Parallax mapping.
-- Render in texture.
-- Forward rendering for transparent objects.
+- Пользовательские шейдеры, материалы и техники рендеринга.
+- Физически корректный рендеринг (PBR).
+- Работа с металлическими материалами (Metallic workflow).
+- Рендеринг с высоким динамическим диапазоном (HDR).
+- Тональное отображение.
+- Коррекция цвета.
+- Автоматическая экспозиция.
+- Гамма-коррекция.
+- Отложенное затенение (Deferred shading).
+- Направленный свет.
+- Точечные источники света + тени.
+- Направленное освещение + тени.
+- Затенение в экранном пространстве (SSAO).
+- Мягкие тени.
+- Объемный свет (направленное освещение, точечные источники).
+- Пакетная обработка (Batching).
+- Создание экземпляров (Instancing).
+- Быстрое приближенное сглаживание (FXAA).
+- Карты нормалей.
+- Параллаксное отображение.
+- Рендеринг в текстуру.
+- Прямой рендеринг для прозрачных объектов.
 - Sky box.
-- Deferred decals.
-- Multi-camera rendering.
-- Lightmapping.
-- Soft particles.
-- Fully customizable vertex format.
-- Compressed textures support.
-- High-quality mip-map on-demand generation.
+- Отложенные декали.
+- Рендеринг с несколькими камерами.
+- Карты освещения (Lightmapping).
+- Мягкие частицы.
+- Полностью настраиваемый формат вершин.
+- Поддержка сжатых текстур.
+- Генерация высококачественных мипмап по требованию.
 
-### Scene
+### Сцена
 
-- Multiple scenes.
-- Full-featured scene graph.
-- Level-of-detail (LOD) support.
-- GPU Skinning.
-- Various scene nodes:
-    - Pivot.
-    - Camera.
-    - Decal.
-    - Mesh.
-    - Particle system.
-    - Sprite.
-    - Multilayer terrain.
-    - Rectangle (2D Sprites)
-    - Rigid body + Rigid Body 2D
-    - Collider + Collider 2D
-    - Joint + Joint 2D
+- Множественные сцены.
+- Полнофункциональный граф сцены.
+- Поддержка уровня детализации (LOD).
+- GPU-скиннинг.
+- Различные узлы сцены:
+    - Поворотный центр (Pivot).
+    - Камера.
+    - Декаль.
+    - Сетка (Mesh).
+    - Система частиц.
+    - Спрайт.
+    - Многослойный ландшафт.
+    - Прямоугольник (2D спрайты).
+    - Твердое тело + твердое тело 2D.
+    - Коллайдер + коллайдер 2D.
+    - Соединение (Joint) + соединение 2D.
 
-### Sound
+### Звук
 
-- [High quality binaural sound with HRTF support](https://github.com/FyroxEngine/Fyrox/tree/master/fyrox-sound).
-- Generic and spatial sound sources.
-- Built-in streaming for large sounds.
-- Raw samples playback support.
-- WAV/OGG format support.
-- HRTF support for excellent positioning and binaural effects.
-- Reverb effect.
+- [Высококачественный бинауральный звук с поддержкой HRTF](https://github.com/FyroxEngine/Fyrox/tree/master/fyrox-sound).
+- Общие и пространственные источники звука.
+- Встроенная потоковая передача для больших звуков.
+- Поддержка воспроизведения сырых сэмплов.
+- Поддержка форматов WAV/OGG.
+- Поддержка HRTF для точного позиционирования и бинауральных эффектов.
+- Эффект реверберации.
 
-### Serialization
+### Сериализация
 
-- Powerful serialization system
-- Almost every entity of the engine can be serialized
-- No need to write your own serialization.
+- Мощная система сериализации.
+- Почти каждый объект движка может быть сериализован.
+- Нет необходимости писать собственный код для сериализации.
 
-### Animation
+### Анимация
 
-- Animation blending state machine - similar to Mecanim in Unity Engine.
-- Animation retargetting - allows you to remap animation from one model to another.
+- Машина состояний для смешивания анимаций — аналогично Mecanim в Unity.
+- Ретаргетинг анимаций — позволяет переносить анимации с одной модели на другую.
 
-### Asset management
+### Управление ассетами
 
-- Advanced asset manager.
-- Fully asynchronous asset loading.
-- PNG, JPG, TGA, DDS, etc. textures.
-- FBX models loader.
-- WAV, OGG sound formats.
-- Compressed textures support (DXT1, DXT3, DTX5).
+- Продвинутый менеджер ассетов.
+- Полностью асинхронная загрузка ассетов.
+- Поддержка текстур в форматах PNG, JPG, TGA, DDS и других.
+- Загрузчик моделей FBX.
+- Поддержка звуковых форматов WAV, OGG.
+- Поддержка сжатых текстур (DXT1, DXT3, DTX5).
 
-### Artificial Intelligence (AI)
+### Искусственный интеллект (ИИ)
 
-- A* pathfinder.
-- Navmesh.
-- Behavior trees.
+- Поиск пути A*.
+- Навигационные сетки (Navmesh).
+- Деревья поведения (Behavior trees).
 
-### User Interface (UI)
+### Пользовательский интерфейс (UI)
 
-- [Advanced node-based UI](https://github.com/FyroxEngine/Fyrox/tree/master/fyrox-ui) with lots of widgets.
-- More than 32 widgets
-- Powerful layout system.
-- Full TTF/OTF fonts support.
-- Based on message passing.
-- Fully customizable.
-- GAPI-agnostic.
-- OS-agnostic.
-- Button widget.
-- Border widget.
-- Canvas widget.
-- Color picker widget.
-- Color field widget.
-- Check box widget.
-- Decorator widget.
-- Drop-down list widget.
-- Grid widget.
-- Image widget.
-- List view widget.
-- Popup widget.
-- Progress bar widget.
-- Scroll bar widget.
-- Scroll panel widget.
-- Scroll viewer widget.
-- Stack panel widget.
-- Tab control widget.
-- Text widget.
-- Text box widget.
-- Tree widget.
-- Window widget.
-- File browser widget.
-- File selector widget.
-- Docking manager widget.
-- NumericUpDown widget.
-- `Vector3<f32>` editor widget.
-- Menu widget.
-- Menu item widget.
-- Message box widget.
-- Wrap panel widget.
-- Curve editor widget.
-- User defined widget.
+- [Продвинутый UI на основе узлов](https://github.com/FyroxEngine/Fyrox/tree/master/fyrox-ui) с множеством виджетов.
+- Более 32 виджетов.
+- Мощная система компоновки.
+- Полная поддержка шрифтов TTF/OTF.
+- Основан на передаче сообщений.
+- Полностью настраиваемый.
+- Независим от графического API.
+- Независим от операционной системы.
+- Виджет кнопки.
+- Виджет рамки.
+- Виджет холста.
+- Виджет выбора цвета.
+- Виджет цветового поля.
+- Виджет флажка.
+- Виджет декоратора.
+- Виджет выпадающего списка.
+- Виджет сетки.
+- Виджет изображения.
+- Виджет списка.
+- Виджет всплывающего окна.
+- Виджет индикатора прогресса.
+- Виджет полосы прокрутки.
+- Виджет панели прокрутки.
+- Виджет просмотра с прокруткой.
+- Виджет панели стека.
+- Виджет управления вкладками.
+- Виджет текста.
+- Виджет текстового поля.
+- Виджет дерева.
+- Виджет окна.
+- Виджет браузера файлов.
+- Виджет выбора файла.
+- Виджет менеджера докинга.
+- Виджет числового ввода.
+- Виджет редактора `Vector3<f32>`.
+- Виджет меню.
+- Виджет элемента меню.
+- Виджет окна сообщений.
+- Виджет панели с переносом.
+- Виджет редактора кривых.
+- Пользовательские виджеты.
 
-### Physics
+### Физика
 
-- Advanced physics (thanks to the [rapier](https://github.com/dimforge/rapier) physics engine)
-- Rigid bodies.
-- Rich set of various colliders.
-- Joints.
-- Ray cast.
-- Many other useful features.
-- 2D support.
+- Продвинутая физика (благодаря движку [rapier](https://github.com/dimforge/rapier)).
+- Твердые тела.
+- Богатый набор различных коллайдеров.
+- Соединения (Joints).
+- Рекастинг лучей.
+- Множество других полезных функций.
+- Поддержка 2D.

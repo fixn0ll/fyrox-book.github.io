@@ -1,38 +1,29 @@
-# Fyrox Game Engine Book
+# Книга по игровому движку Fyrox
 
-Practical reference and user guides for [Fyrox Game Engine](https://github.com/FyroxEngine/Fyrox) and its editor [FyroxEd](https://github.com/FyroxEngine/Fyrox/tree/master/editor).
+Практическое руководство и справочник по [игровому движку Fyrox](https://github.com/FyroxEngine/Fyrox) и его редактору [FyroxEd](https://github.com/FyroxEngine/Fyrox/tree/master/editor).
 
-> ⚠️ Tip: If you want to start using the engine as fast as possible - read this [chapter](./beginning/scripting.md).
+> ⚠️ Совет: Если вы хотите начать использовать движок как можно быстрее, прочитайте эту [главу](./beginning/scripting.md).
 
-**Warning:** The book is in early development stage, you can help to improve it by making a contribution in its
-[repository](https://github.com/fyrox-book/fyrox-book.github.io). Don't be shy, every tip is helpful!
+**Внимание:** Книга находится на ранней стадии разработки, и вы можете помочь её улучшить, внеся свой вклад в её [репозиторий](https://github.com/fyrox-book/fyrox-book.github.io). Не стесняйтесь, любая помощь важна!
 
-## Engine Version
+## Версия движка
 
-Fyrox Team is trying to keep the book up-to-date with the latest version from `master` branch. If something does not
-compile with the latest release from crates.io, then you need to
-[use the latest engine from GitHub repo](./beginning/scripting.md#using-the-latest-engine-version).
+Команда Fyrox старается поддерживать книгу в актуальном состоянии, синхронизируя её с последней версией из ветки `master`. Если что-то не компилируется с последним релизом из crates.io, вам нужно [использовать последнюю версию движка из репозитория GitHub](./beginning/scripting.md#using-the-latest-engine-version).
 
-## How to read the book
+## Как читать эту книгу
 
-Almost every chapter in this book can be read in any order, but we recommend reading Chapters 1, 2, 3 (they're quite small)
-and then going through [Platformer Tutorial (2D)](./tutorials/platformer/part1.md) while learning more about specific
-areas that interest you from the other chapters. There is also a [First-Person Shooter Tutorial (3D)](tutorials/fps/tutorial-1/fps-tutorial.md)
-and [RPG Tutorial (3D)](./tutorials/rpg/intro.md).
+Почти каждую главу этой книги можно читать в любом порядке, но мы рекомендуем начать с глав 1, 2 и 3 (они довольно короткие), а затем пройти [учебник по платформерам (2D)](./tutorials/platformer/part1.md), параллельно изучая темы, которые вас интересуют, из других глав. Также доступны [учебник по шутеру от первого лица (3D)](tutorials/fps/tutorial-1/fps-tutorial.md) и [учебник по RPG (3D)](./tutorials/rpg/intro.md).
 
-## API Documentation
+## Документация API
 
-The book is primarily focused on game development with Fyrox, not on its API. You can find API docs
-[here](https://docs.rs/fyrox/latest/fyrox/).
+Книга в основном посвящена разработке игр с помощью Fyrox, а не его API. Документацию по API вы можете найти [здесь](https://docs.rs/fyrox/latest/fyrox/).
 
-## Required knowledge
+## Необходимые знания
 
-We're expecting that you know basics of Rust programming language, its package manager Cargo. It is also necessary
-to know the _basics_ of the game development, linear algebra, principles of software development and patterns,
-otherwise the book will probably be very hard for you.
+Мы предполагаем, что вы знаете основы языка программирования Rust и его пакетного менеджера Cargo. Также необходимо понимать _основы_ разработки игр, линейной алгебры, принципов разработки программного обеспечения и паттернов проектирования, иначе книга, вероятно, будет для вас очень сложной.
 
-## Support the development
+## Поддержка разработки
 
-The future of the project fully depends on community support, every bit is important!
+Будущее проекта полностью зависит от поддержки сообщества, каждый вклад важен!
 
-[![Become a patron!](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/mrdimas)
+[![Станьте патроном!](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/mrdimas)

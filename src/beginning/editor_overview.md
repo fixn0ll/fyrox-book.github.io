@@ -1,105 +1,81 @@
-# FyroxEd Overview
+# Обзор FyroxEd
 
-FyroxEd - is the native editor of Fyrox, it is made with one purpose - to be an integrated game development environment
-that helps you build your game from start to finish with relatively low effort.
+FyroxEd — это встроенный редактор Fyrox, созданный с одной целью — быть интегрированной средой разработки игр, которая помогает вам создавать игру от начала до конца с относительно небольшими усилиями.
 
-You'll be spending a lot of time in the editor, so you should get familiar with it and learn how to use its basic functionalities.
-This chapter will guide you through the basics, advanced topics will be covered in their respective chapters.
+Вы проведёте много времени в редакторе, поэтому вам стоит познакомиться с ним и изучить его основные функции. Эта глава познакомит вас с основами, а более продвинутые темы будут рассмотрены в соответствующих главах.
 
-## Windows
+## Окна
 
-When you open the editor for the first time you may be confused by the number of windows, buttons, lists, etc. you'll be presented 
-with. Each window serves a different purpose, but all of them work together to help you make your game. Let's take a look at a 
-screenshot of the editor and learn what each part of it is responsible for (please note that this can change over time, because
-development is quite fast and images can easily become outdated):
+Когда вы впервые откроете редактор, вы можете быть ошеломлены количеством окон, кнопок, списков и т.д. Каждое окно служит своей цели, но все они работают вместе, чтобы помочь вам создать игру. Давайте взглянем на скриншот редактора и узнаем, за что отвечает каждая его часть (обратите внимание, что это может меняться со временем, так как разработка идёт быстро, и изображения могут устаревать):
 
-![Windows](./overview.png)
+![Окна](./overview.png)
 
-- **World viewer** - shows every object in the scene and their relationships. Allows inspecting and editing the 
-contents of the scene in a hierarchical form.
-- **Scene preview** - renders the scene with debug info and various editor-specific objects (gizmos, entity icons,
-etc.). Allows you to select, move, rotate, scale, delete, etc. various entities. The **Toolbar** on its left side
-shows available context-dependent tools.
-- **Inspector** - allows you to modify various properties of the selected object.
-- **Message Log** - displays important messages from the editor.
-- **Navmesh Panel** - allows you to create, delete, and edit navigational meshes.
-- **Command Stack** - displays your most recent actions and allows you to undo or redo their changes.
-- **Asset Browser** - allows you to inspect the assets of your game and to instantiate resources in the scene, among other things.
-- **Audio Context** - allows you to edit the settings of the scene's sound context (global volume, available audio buses, effects,
-etc.)
+- **World viewer** — показывает все объекты в сцене и их взаимосвязи. Позволяет просматривать и редактировать содержимое сцены в иерархическом виде.
+- **Scene preview** — отображает сцену с отладочной информацией и различными объектами, специфичными для редактора (гизмо (gizmos), иконки объектов и т.д.). Позволяет выбирать, перемещать, вращать, масштабировать, удалять и т.д. различные сущности. **Toolbar** слева показывает доступные инструменты, зависящие от контекста.
+- **Inspector** — позволяет изменять различные свойства выбранного объекта.
+- **Message Log** — отображает важные сообщения от редактора.
+- **Navmesh Panel** — позволяет создавать, удалять и редактировать навигационные сетки.
+- **Command Stack** — отображает ваши последние действия и позволяет отменять или повторять их изменения.
+- **Asset Browser** — позволяет просматривать ассеты вашей игры и создавать экземпляры ресурсов в сцене, среди прочего.
+- **Audio Context** — позволяет редактировать настройки звукового контекста сцены (громкость, доступные аудиоканалы, эффекты и т.д.).
 
-## Creating or loading a Scene
+## Создание или загрузка сцены
 
-FyroxEd works with scenes - a scene is a container for game entities, you can create and edit one scene at a time. You must have a
-scene loaded to begin working with the editor. To create a scene go to `File -> New Scene`.
+FyroxEd работает со сценами — сцена является контейнером для игровых сущностей, вы можете создавать и редактировать одну сцену за раз. Чтобы начать работу с редактором, у вас должна быть загружена сцена. Чтобы создать сцену, перейдите в `File -> New Scene`.
 
-To load an existing scene, go to `File -> Load` and select the desired scene through the file browser. Recently opened
-scenes can be loaded more quickly by going to `File -> Recent Scenes` and selecting the desired one.
+Чтобы загрузить существующую сцену, перейдите в `File -> Load` и выберите нужную сцену через файловый браузер. Недавно открытые сцены можно загрузить быстрее, перейдя в `File -> Recent Scenes` и выбрав нужную.
 
-## Populating a Scene
+## Заполнение сцены
 
-A scene can contain various game entities. There are two equivalent ways of creating these:
+Сцена может содержать различные игровые сущности. Есть два эквивалентных способа их создания:
 
-- By going to `Create` in the main menu and selecting the desired entity from the drop down.
-- By right-clicking on a game entity in the `World Viewer` and selecting the desired entity from the `Create Child` sub-menu.
+- Перейдя в `Create` в главном меню и выбрав нужную сущность из выпадающего списка.
+- Щёлкнув правой кнопкой мыши на игровой сущности в **World viewer** и выбрав нужную сущность из подменю `Create Child`.
 
-Complex objects usually made in 3D modelling software (Blender, 3Ds Max, Maya, etc.) can be saved in various formats. 
-Fyrox supports FBX format, which is supported by pretty much any 3D modelling software. You can instantiate such objects 
-by simply dragging the one you want and dropping it on the `Scene Preview`. While dragging it, you'll also see a preview 
-of the object.
+Сложные объекты, обычно создаваемые в программах для 3D-моделирования (Blender, 3Ds Max, Maya и т.д.), могут быть сохранены в различных форматах. Fyrox поддерживает формат FBX, который поддерживается практически любым ПО для 3D-моделирования. Вы можете создать экземпляр таких объектов, просто перетащив нужный объект и отпустив его в **Scene preview**. Во время перетаскивания вы также увидите предпросмотр объекта.
 
-You can do the same with other scenes made in the editor (`rgs` files), for example, you can create a scene with a few objects in it
-with some scripts and re-use them within other scenes. Such scenes are called [prefabs](../scene/prefab.md).
+То же самое можно сделать с другими сценами, созданными в редакторе (файлы `rgs`). Например, вы можете создать сцену с несколькими объектами и скриптами, а затем повторно использовать её в других сценах. Такие сцены называются [префабами](../scene/prefab.md).
 
-## Saving a Scene
+## Сохранение сцены
 
-To save your work, go to `File -> Save`. If you're saving a new scene, the editor will ask you to specify a file name and a
-path to where the scene will be saved. Scenes loaded from a file will automatically be saved to the path they were loaded
-from.
+Чтобы сохранить свою работу, перейдите в `File -> Save`. Если вы сохраняете новую сцену, редактор попросит вас указать имя файла и путь, куда сцена будет сохранена. Сцены, загруженные из файла, автоматически сохраняются по тому же пути, откуда они были загружены.
 
-## Undoing and redoing
+## Отмена и повтор действий
 
-FyroxEd remembers your actions and allows you to undo and redo the changes done by these. You can undo or redo changes by either
-going to `Edit -> Undo/Redo` or through the usual shortcuts: `Ctrl+Z` - to undo, `Ctrl+Y` - to redo.
+FyroxEd запоминает ваши действия и позволяет отменять и повторять изменения, вызванные этими действиями. Вы можете отменить или повторить изменения, перейдя в `Edit -> Undo/Redo` или с помощью стандартных сочетаний клавиш: `Ctrl+Z` — отменить, `Ctrl+Y` — повторить.
 
-## Controls
+## Управление
 
-There are number of control keys that you'll be using most of the time, pretty much all of them work in the `Scene Preview` window:
+Есть несколько клавиш управления, которые вы будете использовать чаще всего, практически все они работают в окне **Scene Preview**:
 
-### Editor camera movement
-Click and hold `[Right Mouse Button]` within the `Scene Preview` window to enable the movement controls:
-  - `[W][S][A][D]` - Move camera forward/backward/left/right
-  - `[Space][Q]/[E]` - Raise/Lower Camera
-  - `[Ctrl]` - Speed up
-  - `[Shift]`- Slowdown
-### Others
-- `[Left Mouse Button]` - Select
-- `[Middle Mouse Button]` - Pan camera in viewing plane
-- `[1]` - Select interaction mode
-- `[2]` - Move interaction mode
-- `[3]` - Scale interaction mode
-- `[4]` - Rotate interaction mode
-- `[5]` - Navigational mesh editing mode
-- `[6]` - Terrain editing interaction mode
-- `[Ctrl]+[Z]` - Undo
-- `[Ctrl]+[Y]` - Redo
-- `[Delete]` - Delete current selection.
+### Управление камерой редактора
+Нажмите и удерживайте `[Правую кнопку мыши]` в окне **Scene Preview**, чтобы включить управление камерой:
+  - `[W][S][A][D]` — Движение камеры вперёд/назад/влево/вправо
+  - `[Пробел][Q]/[E]` — Поднять/опустить камеру
+  - `[Ctrl]` — Ускорить движение
+  - `[Shift]` — Замедлить движение
+### Другие
+- `[Левая кнопка мыши]` — Выбрать объект
+- `[Средняя кнопка мыши]` — Панорамирование камеры в плоскости обзора
+- `[1]` — Режим выбора
+- `[2]` — Режим перемещения
+- `[3]` — Режим масштабирования
+- `[4]` — Режим вращения
+- `[5]` — Режим редактирования навигационной сетки
+- `[6]` — Режим редактирования ландшафта
+- `[Ctrl]+[Z]` — Отменить
+- `[Ctrl]+[Y]` — Повторить
+- `[Delete]` — Удалить текущий выбранный объект.
 
-## Play Mode
+## Режим игры
 
-One of the key features of the editor is that it allows you to run your game from it in a separate process. Use the `Play/Stop`
-button at the top of the `Scene Preview` window to enter or leave Play Mode. Keep in mind, that the editor UI will be locked while
-you're in Play Mode. 
+Одной из ключевых функций редактора является возможность запускать вашу игру из него в отдельном процессе. Используйте кнопку `Play/Stop` в верхней части окна **Scene Preview**, чтобы войти или выйти из режима игры. Учтите, что интерфейс редактора будет заблокирован, пока вы находитесь в режиме игры.
 
-Play Mode can be activated only for projects made with the `fyrox-template` (or for projects with a similar structure). The editor
-calls `cargo` commands to build and run your game in a separate process. Running the game in a separate process ensures
-that the editor won't crash if your game does, it also provides excellent isolation between the game and the editor, not
-giving a chance to break the editor by running the game.
+Режим игры может быть активирован только для проектов, созданных с помощью `fyrox-template` (или для проектов с аналогичной структурой). Редактор вызывает команды `cargo` для сборки и запуска вашей игры в отдельном процессе. Запуск игры в отдельном процессе гарантирует, что редактор не завершится с ошибкой, если игра завершится с ошибкой. Это также обеспечивает отличную изоляцию между игрой и редактором, не давая возможности сломать редактор при запуске игры.
 
-## Additional Utilities
+## Дополнительные утилиты
 
-There are also number of powerful utilities that will make your life easier, they can be found under the `Utils` section of the
-main menu:
+В редакторе также есть несколько мощных утилит, которые сделают вашу жизнь проще. Их можно найти в разделе `Utils` главного меню:
 
-- Curve Editor - allows you to create and edit curve resources to make complex laws for game parameters.
-- Path Fixer - helps you fix incorrect resource references in your scenes.
+- Curve Editor (Редактор кривых) — позволяет создавать и редактировать ресурсы кривых для создания сложных законов изменения параметров игры.
+- Path Fixer (Исправление путей) — помогает исправить некорректные ссылки на ресурсы в ваших сценах.

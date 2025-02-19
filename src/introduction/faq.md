@@ -1,27 +1,19 @@
-# Frequently Asked Questions
+# Часто задаваемые вопросы
 
-This chapter contains answers for frequently asked questions.
+Эта глава содержит ответы на часто задаваемые вопросы.
 
-## Which graphics API does the engine use?
+## Какой графический API использует движок?
 
-Fyrox uses OpenGL 3.3 on PC and OpenGL ES 3.0 on WebAssembly. Why? Mainly due to historical reasons. Back in the day 
-(Q4 of 2018), there weren't any good alternatives to it with a wide range of supported platforms. For example, `wgpu` 
-[didn't even exist](https://crates.io/crates/wgpu/0.1.0), as its first version was released in January 2019. Other crates were taking their first baby 
-steps and weren't ready for production.
+Fyrox использует OpenGL 3.3 на PC и OpenGL ES 3.0 на WebAssembly. Почему? В основном по историческим причинам. В то время (конец 2018 года) не было хороших альтернатив с широкой поддержкой платформ. Например, `wgpu` [ещё не существовал](https://crates.io/crates/wgpu/0.1.0), так как его первая версия была выпущена в январе 2019 года. Другие библиотеки делали свои первые шаги и не были готовы к использованию в production.
 
-### Why not use alternatives now?
+### Почему бы не использовать альтернативы сейчас?
 
-There is no need for it. The current implementation works and is more than good enough. So instead of focusing on 
-replacing something that works for little to no benefit, the current focus is on adding features that are missing as 
-well as improving existing features when needed.
+В этом нет необходимости. Текущая реализация работает и более чем достаточна. Поэтому вместо того, чтобы сосредотачиваться на замене чего-то, что работает, с минимальной или нулевой пользой, текущий фокус направлен на добавление недостающих функций, а также на улучшение существующих, когда это необходимо.
 
-## Is the engine based on ECS?
+## Основан ли движок на ECS?
 
-No, the engine uses a mixed composition-based, object-oriented design with message passing and other different approaches 
-that fit the most for a particular task. Why not use ECS for everything, though? Pragmatism. Use the right tool for the job. 
-Don't use a microscope to hammer nails.
+Нет, движок использует смешанный подход, основанный на композиции, объектно-ориентированном дизайне с передачей сообщений и других подходах, которые лучше всего подходят для конкретной задачи. Почему бы не использовать ECS для всего? Прагматизм. Используйте правильный инструмент для работы. Не используйте микроскоп, чтобы забивать гвозди.
 
-## What kinds of games can I make using Fyrox?
+## Какие игры я могу создавать с помощью Fyrox?
 
-Pretty much any kind of games, except maybe games with vast open-worlds (since there's no built-in world streaming).
-In general, it depends on your game development experience.
+Практически любые игры, за исключением, возможно, игр с огромными открытыми мирами (поскольку в движке нет встроенной потоковой загрузки мира). В целом, это зависит от вашего опыта в разработке игр.

@@ -1,28 +1,22 @@
-# Editor, Plugins and Scripts
+# Редактор, плагины и скрипты
 
-Every Fyrox game is just a plugin for both the engine and the editor, such approach allows the game to run from the 
-editor and be able to edit the game entities in it. A game can define any number of scripts, which can be assigned 
-to scene objects to run custom game logic on them. This chapter will cover how to install the engine with its platform-
-specific dependencies, how to use the plugins and scripting system, how to run the editor.
+Каждая игра на Fyrox — это просто плагин как для движка, так и для редактора. Такой подход позволяет запускать игру прямо из редактора и редактировать её сущности. Игра может определять любое количество скриптов, которые можно назначать объектам сцены для выполнения пользовательской игровой логики. В этой главе мы рассмотрим, как установить движок с его специфичными для платформы зависимостями, как использовать плагины и систему скриптов, а также как запустить редактор.
 
-## Platform-specific Dependencies
+## Специфичные для платформы зависимости
 
-Before starting to use the engine, make sure all required platform-specific development dependencies are installed. If 
-using Windows or macOS, no additional dependencies are required other than the [latest Rust installed](https://rustup.rs)
-with appropriate toolchain for your platform.
+Прежде чем начать использовать движок, убедитесь, что все необходимые специфичные для платформы зависимости для разработки установлены. Если вы используете Windows или macOS, никаких дополнительных зависимостей, кроме [последней версии Rust](https://rustup.rs) с подходящим набором инструментов для вашей платформы, не требуется.
 
 ### Linux
 
-On Linux, Fyrox needs the following libraries for development: `libxcb-shape0`, `libxcb-xfixes0`, `libxcb1`, 
-`libxkbcommon`, `libasound2`, `libegl-mesa0` and the `build-essential` package group.
+На Linux для разработки с Fyrox необходимы следующие библиотеки: `libxcb-shape0`, `libxcb-xfixes0`, `libxcb1`, `libxkbcommon`, `libasound2`, `libegl-mesa0` и группа пакетов `build-essential`.
 
-For Debian based distros like Ubuntu, they can be installed like below:
+Для дистрибутивов на основе Debian, таких как Ubuntu, их можно установить следующим образом:
 
 ```shell
 sudo apt install libxcb-shape0-dev libxcb-xfixes0-dev libxcb1-dev libxkbcommon-dev libasound2-dev libegl-mesa0 build-essential
 ```
 
-For NixOS, you can use a `shell.nix` like below:
+Для NixOS можно использовать файл `shell.nix` следующего содержания:
 
 ```nix
 { pkgs ? import <nixpkgs> { } }:
@@ -42,21 +36,17 @@ pkgs.mkShell rec {
 }
 ```
 
-## Project Manager
+## Менеджер проектов
 
-![project manager](https://fyrox.rs/assets/0.36/project_manager.png)
+![менеджер проектов](https://fyrox.rs/assets/0.36/project_manager.png)
 
-Project manager is a part of the engine that allows you to manage multiple projects made with the engine at once.
-It allows you to create a new project or import an existing one, run the project or edit it in the editor, 
-upgrade the project to a selected version of the engine, and many more. 
+Менеджер проектов — это часть движка, которая позволяет управлять несколькими проектами, созданными с его помощью. Он позволяет создавать новые проекты или импортировать существующие, запускать их или редактировать в редакторе, обновлять проект до выбранной версии движка и многое другое.
 
-[Download the project manager](https://fyrox.rs/download.html) for your OS and run it. Then click to `+Create`
-button, select the path where you want the project to be located and click `Create`. Select the new project
-in the list and click `Edit` button to run the editor.
+[Скачайте менеджер проектов](https://fyrox.rs/download.html) для вашей операционной системы и запустите его. Затем нажмите кнопку `+Create`, выберите путь, где должен располагаться проект, и нажмите `Create`. Выберите новый проект в списке и нажмите кнопку `Edit`, чтобы запустить редактор.
 
-## Quick Start Using Console Commands
+## Быстрый старт с использованием консольных команд
 
-Run the following commands to start using the editor as quickly as possible.
+Выполните следующие команды, чтобы начать использовать редактор как можно быстрее.
 
 ```sh
 cargo install fyrox-template
@@ -65,87 +55,65 @@ cd fyrox_test
 cargo run --package editor --release
 ```
 
-## Project Generator
+## Генератор проектов
 
-> ⚠️ This section is mostly for console users and those who like building their software from source code.
-> Prefer using Project Manager whenever possible, it does the same as `fyrox-template` but with GUI.
+> ⚠️ Этот раздел в основном для пользователей консоли и тех, кто предпочитает собирать своё программное обеспечение из исходного кода.
+> По возможности используйте Менеджер проектов, он делает то же самое, что и `fyrox-template`, но с графическим интерфейсом.
 
-Fyrox plugins are written in Rust, this means that if the source code of the game changes one must recompile. 
-This architecture requires some boilerplate code. Fyrox offers a special tiny command line tool - `fyrox-template`. It 
-helps generate all this boilerplate with a single command. Install it by running the following command:
+Плагины Fyrox написаны на Rust, это означает, что при изменении исходного кода игры необходимо перекомпилировать проект. Такая архитектура требует некоторого шаблонного кода. Fyrox предлагает специальный инструмент командной строки — `fyrox-template`. Он помогает сгенерировать весь этот шаблонный код одной командой. Установите его, выполнив следующую команду:
 
 ```shell
 cargo install fyrox-template
 ```
 
-_Note for Linux:_ This installs it in `$user/.cargo/bin`. If receiving errors about the `fyrox-template` command not  
-being found, add this hidden cargo bin folder to the operating systems `$PATH` environment variable.
+_Примечание для Linux:_ Утилита устанавливается в `$user/.cargo/bin`. Если вы получаете ошибки о том, что команда `fyrox-template` не найдена, добавьте эту скрытую папку `cargo bin` в переменную окружения `$PATH` вашей операционной системы.
 
-Now, navigate to the desired project folder and run the following command:
+Теперь перейдите в папку, где должен быть создан проект, и выполните следующую команду:
 
 ```shell
 fyrox-template init --name my_game --style 3d
 ```
 
-Note that unlike `cargo init`, this will create a new folder with the given name.
+Обратите внимание, что в отличие от `cargo init`, эта команда создаст новую папку с указанным именем.
 
-The tool accepts two arguments - a project name (`--name`) and a style (`--style`), which defines the contents of the default
-scene. After initializing the project, go to `game/src/lib.rs` - this is where the game logic is located, as you can 
-see, the `fyrox-template` generated quite a bit of code for you. There are comments explaining what each place is for. For 
-more info about each method, please refer [to the docs](https://docs.rs/fyrox/latest/fyrox/plugin/trait.Plugin.html).
+Инструмент принимает два аргумента — имя проекта (`--name`) и стиль (`--style`), который определяет содержимое сцены по умолчанию. После инициализации проекта перейдите в `game/src/lib.rs` — здесь находится логика игры. Как видите, `fyrox-template` сгенерировал для вас довольно много кода. В файле есть комментарии, объясняющие назначение каждого участка кода. Для получения дополнительной информации о каждом методе обратитесь к [документации](https://docs.rs/fyrox/latest/fyrox/plugin/trait.Plugin.html).
 
-Once the project is generated, memorize the two commands that will help run your game in different modes:
+После создания проекта запомните две команды, которые помогут запустить вашу игру в разных режимах:
 
-- `cargo run --package editor --release` - launches the editor with your game attached. The editor allows you to run your game
-  from it and edit its game entities. It is intended to be used only for development.
-- `cargo run --package executor --release` - creates and runs the production binary of your game, which can be shipped (for
-  example - to a store).
+- `cargo run --package editor --release` — запускает редактор с вашей игрой. Редактор позволяет запускать игру и редактировать её сущности. Он предназначен только для разработки.
+- `cargo run --package executor --release` — создаёт и запускает готовый бинарный файл вашей игры, который можно распространять (например, в магазине приложений).
 
-Navigate to your project's directory and run `cargo run --package editor --release`, after some time you should see the 
-editor:
+Перейдите в папку вашего проекта и выполните `cargo run --package editor --release`. Через некоторое время вы увидите редактор:
 
-![editor](editor.png)
+![редактор](editor.png)
 
-In the editor you can start building your game scene. **Important note:** your scene must have at least one camera,
-otherwise you won't see a thing. Read the next chapter to learn how to use the editor.
+В редакторе вы можете начать создавать свою игровую сцену. **Важное замечание:** ваша сцена должна содержать хотя бы одну камеру, иначе вы ничего не увидите. Прочитайте следующую главу, чтобы узнать, как использовать редактор.
 
-## Using the Latest Engine Version
+## Использование последней версии движка
 
-Due to the nature of the software development, some bugs will inevitably sneak into the major releases, due to this, 
-you may want to use the latest engine version from the repository on GitHub, since it is the most likely to have bugs fixed
-(you can also contribute by fixing any bugs you find or at least, by [filing an issue](https://github.com/FyroxEngine/Fyrox/issues)).
+Из-за природы разработки программного обеспечения, некоторые ошибки неизбежно попадают в основные релизы. Поэтому вы можете захотеть использовать последнюю версию движка из репозитория на GitHub, так как она с наибольшей вероятностью содержит исправления ошибок (вы также можете внести свой вклад, исправив найденные ошибки или хотя бы [сообщив о них](https://github.com/FyroxEngine/Fyrox/issues)).
 
-### Automatic
+### Автоматическое обновление
 
-> ⚠️ `fyrox-template` has special sub-command - `upgrade` to quickly upgrade to desired engine version. To upgrade to 
-> the latest version (`nightly`) you should execute `fyrox-template upgrade --version nightly` command in your game's 
-> directory.
+> ⚠️ У `fyrox-template` есть специальная подкоманда — `upgrade`, которая позволяет быстро обновиться до нужной версии движка. Чтобы обновиться до последней версии (`nightly`), выполните команду `fyrox-template upgrade --version nightly` в папке вашего проекта.
 
-There are three main variants for `--version` switch:
+Основные варианты для ключа `--version`:
 
-- `nightly` - uses latest nightly version of the engine from GitHub directly. This is the preferable version if you want
-to use the latest changes and bug fixes as they release.
-- `latest` - uses latest stable version of the engine. This option also supports `--local` key, that sets the path to
-the engine to `../Fyrox/fyrox` and the editor to `../Fyrox/editor`. Obviously, such path requires the engine to be located
-in the parent directory of your project. This option could be useful if you want to use custom version of the engine 
-(for example, if you're developing a patch for the engine).
-- `major.minor.patch` - uses specific stable version from crates.io (`0.30.0` for example).
+- `nightly` — использует последнюю nightly-версию движка напрямую из GitHub. Это предпочтительный вариант, если вы хотите использовать последние изменения и исправления ошибок сразу после их выпуска.
+- `latest` — использует последнюю стабильную версию движка. Этот вариант также поддерживает ключ `--local`, который указывает путь к движку как `../Fyrox/fyrox`, а к редактору — `../Fyrox/editor`. Очевидно, такой путь требует, чтобы движок находился в родительской папке вашего проекта. Этот вариант может быть полезен, если вы хотите использовать кастомную версию движка (например, если вы разрабатываете патч для движка).
+- `major.minor.patch` — использует конкретную стабильную версию из crates.io (например, `0.30.0`).
 
-### Manual
+### Ручное обновление
 
-Engine version can also be updated manually. The first step to take is to install the latest `fyrox-template`, this can be done
-with a single `cargo` command:
+Версию движка также можно обновить вручную. Первый шаг — установить последнюю версию `fyrox-template`, это можно сделать одной командой:
 
 ```shell
 cargo install fyrox-template --force --git https://github.com/FyroxEngine/Fyrox
 ```
 
-This will ensure you're using the latest project/script template generator, which is important, since old versions
-of the template generator will most likely generate outdated code, no longer be compatible with the engine.
+Это гарантирует, что вы используете последнюю версию генератора шаблонов проектов и скриптов, что важно, так как старые версии генератора могут создавать устаревший код, который больше не совместим с движком.
 
-To switch existing projects to the latest version of the engine, you need to specify paths pointing to the remote repository 
-for the `fyrox` and `fyroxed_base` dependencies. All you need to do is to change paths to these dependencies in the 
-root `Cargo.toml`:
+Чтобы перевести существующие проекты на последнюю версию движка, необходимо указать пути к удалённому репозиторию для зависимостей `fyrox` и `fyroxed_base`. Всё, что нужно сделать, — изменить пути к этим зависимостям в корневом `Cargo.toml`:
 
 ```toml
 [workspace.dependencies.fyrox]
@@ -155,8 +123,7 @@ default-features = false
 version = { git = "https://github.com/FyroxEngine/Fyrox" }
 ```
 
-Now your game will use the latest engine and editor, but beware - new commits could bring some API breaks. You can avoid 
-these by specifying a particular commit, just add `rev = "desired_commit_hash"` to every dependency like so:
+Теперь ваша игра будет использовать последнюю версию движка и редактора, но будьте осторожны — новые коммиты могут содержать изменения в API. Вы можете избежать этого, указав конкретный коммит, добавив `rev = "хэш_коммита"` к каждой зависимости, например:
 
 ```toml
 [dependencies]
@@ -167,13 +134,10 @@ default-features = false
 version = { git = "https://github.com/FyroxEngine/Fyrox", rev = "0195666b30562c1961a9808be38b5e5715da43af" }
 ```
 
-To bring a local git repository of the engine to being up-to-date, just call `cargo update` at the root of the project's
-workspace. This will pull the latest changes from the remote, unless there is no `rev` specified.
+Чтобы обновить локальный git-репозиторий движка до последней версии, выполните команду `cargo update` в корневой папке проекта. Это загрузит последние изменения из удалённого репозитория, если не указан конкретный коммит.
 
-Learn more about dependency paths on the official `cargo` documentation, [here](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#specifying-dependencies-from-git-repositories).
+Подробнее о путях зависимостей можно узнать в официальной документации `cargo`, [здесь](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#specifying-dependencies-from-git-repositories).
 
-## Adding Game Logic
+## Добавление игровой логики
 
-Any object-specific game logic should be added using scripts. A script is a "container" for data and code, that will be
-executed by the engine. Read the [Scripts](../scripting/script.md) chapter to learn how to create, edit, and use scripts in
-your game.
+Любая объектно-ориентированная игровая логика должна добавляться с помощью скриптов. Скрипт — это "контейнер" для данных и кода, который будет выполняться движком. Прочитайте главу [Скрипты](../scripting/script.md), чтобы узнать, как создавать, редактировать и использовать скрипты в вашей игре.
