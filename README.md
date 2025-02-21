@@ -1,4 +1,4 @@
-# Fyrox Game Engine Guide Book
+# Fyrox Game Engine Guide Book (Перевод на русский язык)
 
 A book for Fyrox Game Engine. Read the book [here](https://fyrox-book.github.io)
 
@@ -6,10 +6,6 @@ A book for Fyrox Game Engine. Read the book [here](https://fyrox-book.github.io)
 
 There are very simple contribution rules:
 
-- Test your code snippets
-- Do not repeat existing chapters
-- Write everything in English
-
-### Tests
-
-Every code snippet is tested for compilation, please run `cd src/code/snippets && cargo check`.
+- Не меняйте код из фрагментов кода (комментарии переводить можно)
+- Не повторяйте существующие главы
+- Писать только на русском (кроме названий обьектов редактора, их следует не изменять)
