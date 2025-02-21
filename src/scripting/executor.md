@@ -1,13 +1,10 @@
-# Executor 
+# Исполнитель (Executor)
 
-Executor is a simple wrapper that drives your game plugins, it is intended to be used for production builds of your game.
-The editor runs the executor in separate process when you're entering the play mode. Basically, there is no significant 
-difference between running the game from the editor, or running it as a separate application. The main difference is that
-the editor passes `scene_path` parameter for the executor when entering the play mode.
+Исполнитель (Executor) — это простая обёртка, которая управляет вашими игровыми плагинами. Он предназначен для использования в production-сборках вашей игры. Редактор запускает исполнитель в отдельном процессе, когда вы входите в режим игры. По сути, нет существенной разницы между запуском игры из редактора или запуском её как отдельного приложения. Основное отличие заключается в том, что редактор передаёт параметр `scene_path` исполнителю при входе в режим игры.
 
-## Usage
+## Использование
 
-Executor is meant to be a part of your project's workspace, its typical look could something like this:
+Исполнитель предназначен для того, чтобы быть частью рабочего пространства вашего проекта. Типичный пример его использования может выглядеть так:
 
 ```rust,no_run
 # extern crate fyrox;
@@ -29,26 +26,23 @@ Executor is meant to be a part of your project's workspace, its typical look cou
 # }
 fn main() {
     let mut executor = Executor::new();
-    // Register your game constructor here.
+    // Зарегистрируйте ваш конструктор игры здесь.
     executor.add_plugin_constructor(GameConstructor);
     executor.run()
 }
 ```
 
-Executor has full access to the engine, and through it to the main application window. You can freely change desired
-parts, `Executor` implements `Deref<Target = Engine> + DerefMut` traits, so you can use its instance as an "alias"
-to engine instance. 
+Исполнитель имеет полный доступ к движку и через него к главному окну приложения. Вы можете свободно изменять нужные части, так как `Executor` реализует трейты `Deref<Target = Engine> + DerefMut`, поэтому вы можете использовать его экземпляр как "псевдоним" для экземпляра движка.
 
-To add a plugin to the executor, just use `add_plugin_constructor` method, it accepts any entity that implements
-`PluginConstructor` traits.
+Чтобы добавить плагин в исполнитель, просто используйте метод `add_plugin_constructor`, который принимает любую сущность, реализующую трейт `PluginConstructor`.
 
-## Typical Use Cases
+## Типичные случаи использования
 
-This section covers typical use cases for the `Executor`.
+Этот раздел охватывает типичные случаи использования `Executor`.
 
-### Setting Window Title
+### Установка заголовка окна
 
-You can set window title when creating executor instance:
+Вы можете установить заголовок окна при создании экземпляра исполнителя:
 
 ```rust,no_run
 # extern crate fyrox;

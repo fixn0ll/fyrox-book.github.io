@@ -1,43 +1,21 @@
-# Prefabs
+# Префабы
 
-A prefab is a separate scene that can be instantiated in some other scene, while preserving links between properties
-of its instances and of its parent prefab. Prefabs allow you to create a part of a scene and have multiple instances of
-it in other scenes.
+Префаб — это отдельная сцена, которая может быть инстанцирована в другой сцене, сохраняя связи между свойствами её экземпляров и её родительского префаба. Префабы позволяют вам создавать часть сцены и иметь несколько её экземпляров в других сценах.
 
-Let's quickly check what that means on practice. The engine has a prefab system which allows you to build 
-hierarchical scenes which can include any number of other scenes as child scenes. Child scenes can have their own child
-scenes and so on. This is very efficient decoupling mechanism that allows you to put pieces of the scene in separate 
-scenes (prefabs) and modify them independently. The changes in child scenes will be automatically reflected to all parent
-scenes. Here is the very simple example of why this is important: imagine you need to populate a town with 3D models of
-cars. Each kind of car has its own 3D model and for example, a collision body that won't allow the player to walk through
-cars. How would you do this? The simplest (and dumbest) solution is to copy dozens of car models in the scene, and
-you're done. Imagine that now you need to change something in your car, for example, add a trunk that can be opened.
-What will you do? Of course, you should "iterate" over each car model and do the required changes, you simply don't have
-any other option. This will eat huge amount of time and in general it is very non-productive.
+Давайте быстро проверим, что это означает на практике. Движок имеет систему префабов, которая позволяет вам создавать иерархические сцены, которые могут включать любое количество других сцен в качестве дочерних сцен. Дочерние сцены могут иметь свои собственные дочерние сцены и так далее. Это очень эффективный механизм разделения, который позволяет вам размещать части сцены в отдельных сценах (префабах) и изменять их независимо. Изменения в дочерних сценах будут автоматически отражены во всех родительских сценах. Вот очень простой пример, почему это важно: представьте, что вам нужно заполнить город 3D-моделями машин. Каждый тип машины имеет свою собственную 3D-модель и, например, коллизионное тело, которое не позволит игроку проходить сквозь машины. Как бы вы это сделали? Самое простое (и глупое) решение — скопировать десятки моделей машин в сцену, и всё готово. Теперь представьте, что вам нужно что-то изменить в вашей машине, например, добавить багажник, который можно открыть. Что вы будете делать? Конечно, вы должны "пройтись" по каждой модели машины и внести необходимые изменения, у вас просто нет другого варианта. Это займёт огромное количество времени и в целом очень непродуктивно.
 
-This is where prefabs will save you hours of work. All you need to do is to create a car prefab and instantiate it
-multiple times in your scene. When you'll need to change something in the car, you simply go to the prefab and change
-it. After that every prefab instance will have your changes!
+Вот где префабы сэкономят вам часы работы. Всё, что вам нужно сделать, — это создать префаб машины и инстанцировать его несколько раз в вашей сцене. Когда вам нужно будет что-то изменить в машине, вы просто переходите к префабу и вносите изменения. После этого каждый экземпляр префаба будет иметь ваши изменения!
 
-Prefabs can be used to create self-contained entities in your game, examples of this includes: visual effects, 
-any scripted game entities (bots, turrets, player, doors, etc.). Such prefabs can be either directly instantiated in
-a scene in the editor, or instantiated at runtime when needed.
+Префабы могут использоваться для создания самодостаточных сущностей в вашей игре, примеры этого включают: визуальные эффекты, любые скриптованные игровые сущности (боты, турели, игрок, двери и т.д.). Такие префабы могут быть либо напрямую инстанцированы в сцене в редакторе, либо инстанцированы во время выполнения, когда это необходимо.
 
-## How to create and use a prefab
+## Как создать и использовать префаб
 
-All you need to do is to make a scene in the editor with all required objects and save it! After that, you can use the
-scene in other scenes and just do its instantiation, as in usual 3D models. You can either instantiate it from the
-editor by drag'n'drop a prefab to scene previewer, or do standard [model resource instantiation](../resources/model.md#instantiation)
+Всё, что вам нужно сделать, — это создать сцену в редакторе со всеми необходимыми объектами и сохранить её! После этого вы можете использовать сцену в других сценах и просто инстанцировать её, как обычные 3D-модели. Вы можете либо инстанцировать её из редактора, перетащив префаб в превью сцены, либо сделать стандартное [инстанцирование ресурса модели](../resources/model.md#instantiation).
 
-## Property inheritance
+## Наследование свойств
 
-As already mentioned in the intro section, instances inherit properties from their parent prefabs. For example, you
-can change position of an object in prefab and every instance will reflect that change - the object's instances will
-also move. This works until there's no manual change to a property in instance, if you do so, your change is 
-considered with higher priority. See [this chapter](./inheritance.md) for more info.
+Как уже упоминалось во вступительном разделе, экземпляры наследуют свойства от своих родительских префабов. Например, вы можете изменить положение объекта в префабе, и каждый экземпляр отразит это изменение — экземпляры объекта также переместятся. Это работает до тех пор, пока не будет ручного изменения свойства в экземпляре, если вы это сделаете, ваше изменение будет иметь более высокий приоритет. Подробнее см. в [этой главе](./inheritance.md).
 
-## Hierarchical Prefabs
+## Иерархические префабы
 
-Prefabs can have other prefab instances inside it. This means that you can, for example, create a room populated with
-instances of other prefabs (bookshelves, chairs, tables, etc.) and then use the room prefab to build a bigger scene.
-The changes in the base prefabs will be reflected in their instances, regardless of how deep the hierarchy is.
+Префабы могут содержать другие экземпляры префабов внутри себя. Это означает, что вы можете, например, создать комнату, заполненную экземплярами других префабов (книжные полки, стулья, столы и т.д.), а затем использовать префаб комнаты для построения более крупной сцены. Изменения в базовых префабах будут отражены в их экземплярах, независимо от того, насколько глубока иерархия.

@@ -1,61 +1,45 @@
-# Assets
+# Ассеты
 
-Pretty much every game depends on various assets, such as 3D models, textures, sounds, etc. Fyrox has its own assets 
-pipeline made to make your life easier.
+Практически каждая игра зависит от различных ассетов, таких как 3D-модели, текстуры, звуки и т.д. Fyrox имеет собственную систему работы с ассетами, разработанную для упрощения вашей работы.
 
-## Asset Types
+## Типы ассетов
 
-The engine offers a set of assets that should cover all of your needs:
+Движок предлагает набор ассетов, которые должны покрыть все ваши потребности:
 
-- [Models](../resources/model.md) - are a set of objects. They can be a simple 3D model (barrels, bushes, weapons, 
-etc.) or complex scenes with lots of objects and possibly other model instances. Fyrox supports two main formats:
-FBX - which can be used to import 3D models, RGS - which are scenes made in FyroxEd. RGS models are special, as they can be 
-used as _hierarchical prefabs_.
-- [Textures](../resources/texture.md) - are images used to add graphical details to objects. The
-engine supports multiple texture formats, such as PNG, JPG, BMP, etc. Compressed textures in DDS format are also supported.
-- [Sound buffers](../resources/sound.md) - are data buffers for sound sources. Fyrox supports WAV and OGG formats. 
-- [Curves](../resources/curve.md) - are parametric curves. They're used to create complex functions for numeric parameters. 
-They can be made in the `Curve Editor` (`Utils -> Curve Editor`)
-- [HRIR Spheres](../sound/hrtf.md) - head-related impulse response collection used for head-related transfer function
-in the HRTF sound rendering.
-- [Fonts](../ui/font.md) - arbitrary TTF/OTF fonts.
-- [Materials](../rendering/materials.md) - materials for rendering.
-- [Shaders](../rendering/shaders.md) - shaders for rendering.
-- It is also possible to create custom assets. See [respective chapter](../resources/custom.md) for more info.
+- [Модели (Models)](../resources/model.md) — это набор объектов. Они могут быть простыми 3D-моделями (бочки, кусты, оружие и т.д.) или сложными сценами с множеством объектов и, возможно, другими экземплярами моделей. Fyrox поддерживает два основных формата: FBX — который можно использовать для импорта 3D-моделей, и RGS — сцены, созданные в FyroxEd. RGS-модели особенные, так как они могут использоваться как _иерархические префабы_.
+- [Текстуры (Textures)](../resources/texture.md) — это изображения, используемые для добавления графических деталей к объектам. Движок поддерживает несколько форматов текстур, таких как PNG, JPG, BMP и т.д. Также поддерживаются сжатые текстуры в формате DDS.
+- [Звуковые буферы (Sound buffers)](../resources/sound.md) — это буферы данных для источников звука. Fyrox поддерживает форматы WAV и OGG.
+- [Кривые (Curves)](../resources/curve.md) — это параметрические кривые. Они используются для создания сложных функций для числовых параметров. Их можно создавать в редакторе кривых (`Utils -> Curve Editor`).
+- [HRIR-сферы (HRIR Spheres)](../sound/hrtf.md) — коллекция импульсных откликов, связанных с головой, используемая для функции передачи, связанной с головой (HRTF) в рендеринге звука.
+- [Шрифты (Fonts)](../ui/font.md) — произвольные шрифты TTF/OTF.
+- [Материалы (Materials)](../rendering/materials.md) — материалы для рендеринга.
+- [Шейдеры (Shaders)](../rendering/shaders.md) — шейдеры для рендеринга.
+- Также возможно создавать пользовательские ассеты. Подробнее см. в [соответствующей главе](../resources/custom.md).
 
-## Asset Management
+## Управление ассетами
 
-Asset management is performed from the `Asset Browser` window in the editor, you can select an asset, preview it, and edit
-its import options. Here's a screenshot of the asset browser with a texture selected:
+Управление ассетами осуществляется через окно `Asset Browser` в редакторе. Вы можете выбрать ассет, просмотреть его и изменить параметры импорта. Вот скриншот окна браузера ассетов с выбранной текстурой:
 
-![asset browser](assets.png)
+![Браузер ассетов](assets.png)
 
-The most interesting part here is the import options section under the previewer. It allows you to set asset-specific import options
-and apply them. Every asset has its own set of import options. See their respective asset page from the section above to learn
-what each import option is for.
+Самая интересная часть здесь — это раздел параметров импорта под превью. Он позволяет задать специфические параметры импорта для ассета и применить их. Каждый ассет имеет свой набор параметров импорта. Подробнее о каждом параметре можно узнать на соответствующих страницах ассетов, указанных выше.
 
-## Asset Instantiation
+## Инстанцирование ассетов
 
-Some asset types can be instantiated in scenes; for now, you can only create direct instances from models. This
-is done by simply dragging the model you want to instantiate and dropping it on the `Scene Preview`. While dragging it, 
-you'll also see a preview of the model.
+Некоторые типы ассетов могут быть инстанцированы в сценах; на данный момент вы можете создавать прямые экземпляры только из моделей. Это делается простым перетаскиванием модели, которую вы хотите инстанцировать, в окно `Scene Preview`. Во время перетаскивания вы также увидите превью модели.
 
-![preview](preview.gif)
+![Превью](preview.gif)
 
-The maximum number of asset instances is not limited by the engine but it is by the memory and CPU resources of your PC. 
-Note that the engine does try to reuse data across instances as much as possible.
+Максимальное количество экземпляров ассетов не ограничено движком, но ограничено ресурсами памяти и процессора вашего компьютера. Обратите внимание, что движок старается максимально повторно использовать данные между экземплярами.
 
-You can also instantiate assets dynamically from your code. Here's an example of that for a Model:
+Вы также можете инстанцировать ассеты динамически из вашего кода. Вот пример для модели:
 
 ```rust,no_run,edition2018
 {{#include ../code/snippets/src/resource/mod.rs:instantiate_model}}
 ```
 
-This is very useful with prefabs that you may want to instantiate in a scene at runtime. 
+Это особенно полезно для префабов, которые вы можете захотеть инстанцировать в сцене во время выполнения.
 
-## Loading Assets
+## Загрузка ассетов
 
-Usually, there is no need to manually handle the loading of assets since you have the editor to help with that - just create
-a scene with all the required assets. However, there are times when you may need to instantiate some asset dynamically, for 
-example, a bot prefab. For these cases, you can use the `ResourceManager::request<T>` method with the appropriate type,
-such as `Model`, `Texture`, `SoundBuffer`, etc.
+Обычно нет необходимости вручную управлять загрузкой ассетов, так как редактор помогает с этим — просто создайте сцену со всеми необходимыми ассетами. Однако бывают случаи, когда вам может понадобиться динамически инстанцировать какой-либо ассет, например, префаб бота. Для таких случаев вы можете использовать метод `ResourceManager::request<T>` с соответствующим типом, например, `Model`, `Texture`, `SoundBuffer` и т.д.

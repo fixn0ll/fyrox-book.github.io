@@ -1,57 +1,45 @@
-# Mesh node
+# Узел модели (Mesh Node)
 
-Mesh is a scene node that represents a 3D model. This one of the most commonly used nodes in almost every game.
-Meshes could be easily created either programmatically or be made in some 3D modelling software (like Blender)
-and loaded in your scene.
+Узел модели — это узел сцены, который представляет 3D-модель. Это один из наиболее часто используемых узлов практически в каждой игре. Модели могут быть легко созданы как программно, так и с помощью 3D-редакторов (например, Blender) и загружены в вашу сцену.
 
-## Surfaces
+## Поверхности (Surfaces)
 
-Surface is a set of triangles that uses the same [material](../rendering/materials.md). Mesh node could contain zero of 
-more surfaces; each surface contains a set of vertices and indices that binds vertices with triangles. Mesh nodes split 
-into surfaces to be rendered effectively by modern GPUs.
+Поверхность — это набор треугольников, которые используют один и тот же [материал](../rendering/materials.md). Узел модели может содержать ноль или более поверхностей; каждая поверхность содержит набор вершин и индексов, которые связывают вершины с треугольниками. Узлы моделей разделены на поверхности для эффективного рендеринга современными GPU.
 
-## How to create
+## Как создать
 
-There are basically two ways, how to pick one depends on your needs. In general, using a 3D modelling software is
-the way to go, especially with tons and tons of free 3D models available online.
+Есть два основных способа, выбор зависит от ваших потребностей. В общем случае использование 3D-редакторов — это предпочтительный путь, особенно с учётом огромного количества бесплатных 3D-моделей, доступных в интернете.
 
-> ⚠️ The engine supports _only_ FBX and GLTF file format for 3D models! 
-> To use GLTF, specify `gltf` feature of the engine in your root Cargo.toml
+> ⚠️ Движок поддерживает _только_ форматы файлов FBX и GLTF для 3D-моделей! 
+> Чтобы использовать GLTF, укажите функцию `gltf` движка в вашем корневом Cargo.toml.
 
-### Using a 3D modelling software
+### Использование 3D-редакторов
 
-To create a 3D model, you could use [Blender](https://www.blender.org/) and then export it to `FBX` file format.
-To load your 3D model in the game, you should do few simple steps (loading a 3D model does not differ from a prefab 
-instantiation):
+Чтобы создать 3D-модель, вы можете использовать [Blender](https://www.blender.org/), а затем экспортировать её в формат `FBX`. Чтобы загрузить вашу 3D-модель в игру, вам нужно выполнить несколько простых шагов (загрузка 3D-модели не отличается от инстанцирования префаба):
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/mesh.rs:load_model_to_scene}}
 ```
 
-This code snippet intentionally omits proper `async/await` usage (instead it just blocks current thread until
-model is loading) and error handling. In the real game you should carefully handle all errors and use `async/await`
-properly.
+Этот фрагмент кода намеренно опускает правильное использование `async/await` (вместо этого он просто блокирует текущий поток до завершения загрузки модели) и обработку ошибок. В реальной игре вам следует тщательно обрабатывать все ошибки и правильно использовать `async/await`.
 
-### Creating a procedural mesh
+### Создание процедурной модели
 
-A mesh instance could be created from code, such meshes are called "procedural". They're suitable for cases when you
-cannot create a mesh in 3D modelling software.
+Экземпляр модели может быть создан из кода, такие модели называются "процедурными". Они подходят для случаев, когда вы не можете создать модель в 3D-редакторе.
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/mesh.rs:create_procedural_mesh}}
 ```
 
-As you can see, creating a mesh procedurally requires lots of manual work and not so easy.
+Как видите, создание модели процедурно требует много ручной работы и не так просто.
 
-## Animation
+## Анимация
 
-Mesh node supports bone-based animation (skinning) and blend shapes. See [Animation chapter](./../animation/animation.md) 
-for more info.
+Узел модели поддерживает анимацию на основе костей (скелетная анимация) и морфинг (blend shapes). Подробнее см. в главе [Анимация](./../animation/animation.md).
 
-## Data Buffers
+## Буферы данных
 
-It is possible to access vertex buffer and index buffer of a mesh to either read or write some data there. 
-For example, the following code extracts world-space positions of every vertex of an animated mesh:
+Можно получить доступ к вершинному буферу и индексному буферу модели для чтения или записи данных. Например, следующий код извлекает мировые координаты каждой вершины анимированной модели:
 
 ```rust ,no_run
 {{#include ../code/snippets/src/scene/mesh.rs:extract_world_space_vertices}}

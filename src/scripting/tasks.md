@@ -1,64 +1,31 @@
-# Tasks
+# Задачи (Tasks)
 
-Fyrox supports task-based programming for both scripts and plugins. Task is a closure that does something in a separate
-thread and then the result of it is returned back to the main thread. This is very useful technique, that allows you to
-perform heavy calculations using all available CPU power, not just one CPU core with a single main thread. Tasks could
-be used for pretty much anything, that can be done as a separate piece of work. 
+Fyrox поддерживает программирование на основе задач как для скриптов, так и для плагинов. Задача — это замыкание, которое выполняет что-то в отдельном потоке, а затем возвращает результат обратно в основной поток. Это очень полезный подход, который позволяет вам выполнять тяжёлые вычисления, используя всю доступную мощность процессора, а не только одно ядро с одним основным потоком. Задачи могут использоваться практически для всего, что можно выполнить как отдельную часть работы.
 
-## How it works
+## Как это работает
 
-Main thread spawns a task which is then sent to the task pool. There's a fixed set of worker threads, that extracts
-tasks from the task pool when there's any. Task's code is then executed in one of the worker thread, which may take
-any amount of time. When the task is completed, its result is sent to the main thread and then a callback closure is
-executed to do a desired action on task completion. Usually it's something relatively fast - for example you may 
-spawn a task that calculates a path on a large navigational mesh and when it is done, you store that path in one of your
-script instance from which the task was spawned. As you can see, there are two major parts - the task itself and the
-closure. Graphically it can be represented like this:
+Основной поток создаёт задачу, которая затем отправляется в пул задач. В пуле задач есть фиксированный набор рабочих потоков, которые извлекают задачи из пула, когда они есть. Код задачи затем выполняется в одном из рабочих потоков, что может занять любое количество времени. Когда задача завершена, её результат отправляется в основной поток, а затем выполняется замыкание обратного вызова для выполнения желаемого действия по завершении задачи. Обычно это что-то относительно быстрое — например, вы можете создать задачу, которая вычисляет путь на большой навигационной сетке, и когда она будет завершена, вы сохраните этот путь в одном из экземпляров вашего скрипта, из которого была создана задача. Как вы можете видеть, есть две основные части — сама задача и замыкание. Графически это можно представить следующим образом:
 
-![task](task.svg)
+![Задача](task.svg)
 
-Green line represents the main thread and the two purple lines are the worker threads. There could be any number of
-worker threads, and usually it is a worker thread per each CPU core. Let's take a look at a typical task path on
-this image (yellow-ish one). At first, we spawn a task, and it is immediately put in the task pool (in the same thread),
-after this if we have a free worker thread it extracts our task from the pool and sends it to execution. As you can
-see any task must implement `Send` trait, otherwise you'll get a _compilation error_. When the task is complete, the
-worker thread sends the result (again, the result must be `Send`) to the main thread and an associated callback closure
-is executed to do something with the result. While the task is being executed, the main thread is not blocked, and it 
-can do other useful stuff. 
+Зелёная линия представляет основной поток, а две фиолетовые линии — рабочие потоки. Рабочих потоков может быть любое количество, и обычно это один рабочий поток на каждое ядро процессора. Давайте рассмотрим типичный путь задачи на этом изображении (желтоватый). Сначала мы создаём задачу, и она сразу же помещается в пул задач (в том же потоке), после этого, если у нас есть свободный рабочий поток, он извлекает нашу задачу из пула и отправляет её на выполнение. Как вы можете видеть, любая задача должна реализовывать трейт `Send`, иначе вы получите _ошибку компиляции_. Когда задача завершена, рабочий поток отправляет результат (опять же, результат должен быть `Send`) в основной поток, и связанное замыкание обратного вызова выполняется, чтобы сделать что-то с результатом. Пока задача выполняется, основной поток не блокируется и может выполнять другие полезные действия.
 
-## Examples
+## Примеры
 
-The following example calculates a path on a navigational mesh in using task-based approach described above. At first,
-it prepares the "environment" for the task by cloning a shared navigational mesh (`Arc<RwLock<NavMesh>>`) into a 
-local variable. Then it spawns a new task (`async move { .. }` block) which reads the shared navigational mesh
-and calculates a long path, that could take a few frames to compute (imagine a huge island, and we need to get
-a path from one corner to another). As the last argument to the `spawn_script_task` method we pass a closure that
-will be executed on the main thread when the task is complete. It just saves the computed path in the script's 
-field which is then used for visualization.
+Следующий пример вычисляет путь на навигационной сетке с использованием подхода на основе задач, описанного выше. Сначала он подготавливает "окружение" для задачи, копируя общую навигационную сетку (`Arc<RwLock<NavMesh>>`) в локальную переменную. Затем он создаёт новую задачу (блок `async move { .. }`), которая читает общую навигационную сетку и вычисляет длинный путь, который может занять несколько кадров для вычисления (представьте огромный остров, и нам нужно получить путь из одного угла в другой). В качестве последнего аргумента метода `spawn_script_task` мы передаём замыкание, которое будет выполнено в основном потоке, когда задача завершится. Оно просто сохраняет вычисленный путь в поле скрипта, который затем используется для визуализации.
 
 ```rust,no_run
 {{#include ../code/snippets/src/scripting/tasks.rs:script_task}}
 ```
 
-Plugins could also spawn tasks, which operates on application scale basis, unlike script tasks which operates with
-separate script instances. A plugin task is a bit easier to use:
+Плагины также могут создавать задачи, которые работают на уровне приложения, в отличие от задач скриптов, которые работают с отдельными экземплярами скриптов. Задача плагина немного проще в использовании:
 
 ```rust,no_run
 {{#include ../code/snippets/src/scripting/tasks.rs:plugin_task}}
 ```
 
-## Performance
+## Производительность
 
-You should avoid task-based approach for small (in time terms) tasks, because each task has additional cost which
-might be larger than the actual task executed in-place. This is because you need to send your task to a separate 
-thread using a channel, then the callback closure is stored as a trait object which involves memory allocation. 
-Since tasks uses type erasure technique, they perform dynamic type casting which is not free. Also, there could be
-any other implementation-defined "slow" spots.
+Вам следует избегать подхода на основе задач для небольших (с точки зрения времени) задач, потому что каждая задача имеет дополнительные затраты, которые могут быть больше, чем фактическая задача, выполняемая на месте. Это связано с тем, что вам нужно отправить вашу задачу в отдельный поток с использованием канала, затем замыкание обратного вызова сохраняется как объект-трейт, что требует выделения памяти. Поскольку задачи используют технику стирания типов, они выполняют динамическое приведение типов, что также не бесплатно. Также могут быть другие "медленные" места, определённые реализацией.
 
-A general advice would be: run a profiler first to find hot spots in your game, then try to optimize them. If you
-hit the optimization limit, use tasks. Do not use tasks until you really need them, try to optimize your game first!
-If you're working on a simple 2D game, you'll never need to use tasks. You might need to use tasks when your have,
-for instance, a procedurally generated world that should be generated on the fly. For example, if you're making a
-dungeon crawler with infinite world. Tasks are also very useful for large games with loads of content and activities.
-You could off-thread AI, world manipulation (for example if you have a destructible world), etc. In other words -
-do not use a sledgehammer to hammer nails, unless you have a _huge_ nail.
+Общий совет: сначала запустите профилировщик, чтобы найти узкие места в вашей игре, затем попытайтесь их оптимизировать. Если вы достигли предела оптимизации, используйте задачи. Не используйте задачи, пока они вам действительно не понадобятся, сначала попробуйте оптимизировать вашу игру! Если вы работаете над простой 2D-игрой, вам никогда не понадобится использовать задачи. Вам может понадобиться использовать задачи, если у вас, например, процедурно генерируемый мир, который должен создаваться на лету. Например, если вы делаете dungeon crawler с бесконечным миром. Задачи также очень полезны для больших игр с большим количеством контента и активностей. Вы можете вынести ИИ, манипуляции с миром (например, если у вас разрушаемый мир) и т.д. на отдельные потоки. Другими словами — не используйте кувалду для забивания гвоздей, если у вас нет _огромного_ гвоздя.

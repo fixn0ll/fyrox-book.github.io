@@ -1,36 +1,30 @@
-# Sprite
+# Спрайт (Sprite)
 
-Sprite is just a quad mesh that is always facing camera. It has size, color, rotation around "look" axis and a texture.
-Sprites are useful mostly for projectiles, like glowing plasma, and for things that should always face a camera.
+Спрайт — это просто четырёхугольник (квадрат), который всегда повёрнут к камере. Он имеет размер, цвет, вращение вокруг оси "взгляда" и текстуру. Спрайты полезны в основном для снарядов, таких как светящаяся плазма, и для объектов, которые всегда должны быть обращены к камере.
 
-> ⚠️ It should be noted that **sprites are not meant to be used for 2D games**, they're only for 3D. 
-> Use [Rectangle node](./rectangle.md) if you need 2D sprites.
+> ⚠️ Следует отметить, что **спрайты не предназначены для использования в 2D-играх**, они только для 3D. 
+> Используйте [Узел прямоугольника](./rectangle.md), если вам нужны 2D-спрайты.
 
-## How to create
+## Как создать
 
-A sprite instance could be created using `SpriteBuilder`:
+Экземпляр спрайта можно создать с помощью `SpriteBuilder`:
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/sprite.rs:create_sprite}}
 ```
 
-A sprite with a texture could be created by using `.with_material` method of the builder:
+Спрайт с текстурой можно создать, используя метод конструктора `.with_material`:
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/sprite.rs:create_sprite_with_texture}}
 ```
 
-Please note, that this code create a material per each sprite. This could be very unoptimal if you're using tons of 
-sprites at once, share the same material resource across multiple sprites if you can. Otherwise, each sprite will be
-rendered in a separate draw call and the overall performance will be very low.
+Обратите внимание, что этот код создаёт материал для каждого спрайта. Это может быть очень неоптимально, если вы используете множество спрайтов одновременно, по возможности используйте один и тот же материал для нескольких спрайтов. В противном случае каждый спрайт будет отрисован в отдельном вызове отрисовки, и общая производительность будет очень низкой.
 
-## Animation
+## Анимация
 
-See [Sprite Animation](../animation/spritesheet/spritesheet.md) chapter for more info.
+Подробнее см. в главе [Анимация спрайтов](../animation/spritesheet/spritesheet.md).
 
-## General rules
+## Общие правила
 
-Sprites **must not** be used to create any visual effects that involve many particles. You should use 
-[particle systems](particle_system_node.md) for that. Why so? Particles systems are very well optimized for managing
-huge amounts of particles at the same time, but sprites are not. Each sprite is quite heavy to be used as a particle in 
-particle systems, it has a lot of "useless" info that will eat a lot of memory.
+Спрайты **не должны** использоваться для создания визуальных эффектов, которые включают множество частиц. Для этого следует использовать [системы частиц](particle_system_node.md). Почему? Системы частиц очень хорошо оптимизированы для управления огромным количеством частиц одновременно, а спрайты — нет. Каждый спрайт довольно тяжёлый для использования в качестве частицы в системах частиц, он содержит много "бесполезной" информации, которая будет занимать много памяти.

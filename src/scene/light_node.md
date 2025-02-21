@@ -1,90 +1,69 @@
-# Light node
+# Узел света (Light Node)
 
-The engine offers complex lighting system with various types of light sources.
+Движок предлагает сложную систему освещения с различными типами источников света.
 
-## Light types
+## Типы источников света
 
-There are three main types of light sources: directional, point, and spotlights.
+Есть три основных типа источников света: направленный, точечный и прожектор.
 
-### Directional light
+### Направленный свет (Directional Light)
 
-Directional light does not have a position, its rays are always parallel, and it has a particular direction in space.
-An example of directional light in real-life could be our Sun. Even if it is a point light, it is so far away from
-the Earth, so we can assume that its rays are always parallel. Directional light sources are suitable for outdoor
-scenes.
+Направленный свет не имеет позиции, его лучи всегда параллельны, и он имеет определённое направление в пространстве. Пример направленного света в реальной жизни — это наше Солнце. Даже если это точечный источник света, он находится так далеко от Земли, что мы можем считать его лучи всегда параллельными. Направленные источники света подходят для сцен на открытом воздухе.
 
-A directional light source could be created like this:
+Направленный источник света можно создать следующим образом:
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/light.rs:create_directional_light}}
 ```
 
-By default, the light source will be oriented to lit "the ground". In other words its direction will be faced towards
-`(0.0, -1.0, 0.0)` vector. You can rotate it as you want by setting local transform of it while building. Something
-like this:
+По умолчанию источник света будет ориентирован так, чтобы освещать "землю". Другими словами, его направление будет направлено в сторону вектора `(0.0, -1.0, 0.0)`. Вы можете повернуть его, как хотите, установив локальную трансформацию при создании. Например, так:
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/light.rs:create_oriented_directional_light}}
 ```
 
-### Point light
+### Точечный свет (Point Light)
 
-Point light is a light source that emits lights in all directions, it has a position, but does not have an orientation.
-An example of a point light source: light bulb.
+Точечный свет — это источник света, который излучает свет во всех направлениях, он имеет позицию, но не имеет ориентации. Пример точечного источника света: лампочка.
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/light.rs:create_point_light}}
 ```
 
-### Spotlight
+### Прожектор (Spotlight)
 
-Spotlight is a light source that emits lights in cone shape, it has a position and orientation. An example of
-a spotlight source: flashlight.
+Прожектор — это источник света, который излучает свет в форме конуса, он имеет позицию и ориентацию. Пример прожектора: фонарик.
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/light.rs:create_spot_light}}
 ```
 
-## Light scattering
+## Рассеивание света
 
-![scattering](scattering.png)
+![Рассеивание](scattering.png)
 
-Spot and point lights support light scattering effect. Imagine you're walking with a flashlight in a foggy weather,
-the fog will scatter the light from your flashlight making it, so you'll see the "light volume". Light scattering is
-**enabled by default**, so you don't have to do anything to enable it. However, in some cases you might want to disable
-it, you can do this either while building a light source or change light scattering options on existing light source.
-Here is the small example of how to do that.
+Прожекторы и точечные источники света поддерживают эффект рассеивания света. Представьте, что вы идёте с фонариком в туманную погоду, туман будет рассеивать свет от вашего фонарика, создавая "объём света". Рассеивание света **включено по умолчанию**, поэтому вам не нужно ничего делать, чтобы включить его. Однако в некоторых случаях вы можете захотеть отключить его, это можно сделать как при создании источника света, так и изменив параметры рассеивания на существующем источнике света. Вот небольшой пример, как это сделать.
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/light.rs:disable_light_scatter}}
 ```
 
-You could also change the amount of scattering per each color channel, using this you could imitate the
-[Rayleigh scattering](https://en.wikipedia.org/wiki/Rayleigh_scattering):
+Вы также можете изменить количество рассеивания для каждого цветового канала, используя это, вы можете имитировать [Рэлеевское рассеяние](https://ru.wikipedia.org/wiki/Рэлеевское_рассеяние):
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/light.rs:use_rayleigh_scattering}}
 ```
 
-## Shadows
+## Тени
 
-By default, light sources cast shadows. You can change this by using `set_cast_shadows` method of a light source. You
-should carefully manage shadows: shadows giving the most significant performance impact, you should keep the number of
-light sources that can cast shadows at lowest possible to keep performance at good levels. You can also turn
-on/off shadows when you need:
+По умолчанию источники света отбрасывают тени. Вы можете изменить это, используя метод `set_cast_shadows` источника света. Вам следует тщательно управлять тенями: тени оказывают наибольшее влияние на производительность, вы должны держать количество источников света, которые могут отбрасывать тени, на минимально возможном уровне, чтобы поддерживать производительность на хорошем уровне. Вы также можете включать/выключать тени, когда это необходимо:
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/light.rs:switch_shadows}}
 ```
 
-Not every light should cast shadows, for example a small light that a player can see only in a distance can have
-shadows disabled. You should set the appropriate values depending on your scene, just remember: the fewer the shadows
-the better the performance. The most expensive shadows are from point lights, the less, from spotlights and directional
-lights.
+Не каждый источник света должен отбрасывать тени, например, маленький источник света, который игрок может видеть только на расстоянии, может иметь тени отключёнными. Вы должны устанавливать соответствующие значения в зависимости от вашей сцены, просто помните: чем меньше теней, тем выше производительность. Самые дорогие тени — от точечных источников света, менее дорогие — от прожекторов и направленных источников света.
 
-## Performance
+## Производительность
 
-Lights are not cheap, every light source has some performance impact. As a general rule, try to keep the amount
-of light sources at reasonable levels and especially try to avoid creating tons of light sources in a small area.
-Keep in mind that the less area the light needs to "cover", the higher the performance. This means that you can have
-tons of small light sources for free.
+Источники света не дешёвые, каждый источник света оказывает некоторое влияние на производительность. Как общее правило, старайтесь держать количество источников света на разумном уровне и особенно старайтесь избегать создания множества источников света на небольшой площади. Помните, что чем меньше площадь, которую нужно "осветить", тем выше производительность. Это означает, что вы можете иметь множество маленьких источников света практически бесплатно.

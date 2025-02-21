@@ -1,56 +1,35 @@
-# Property Inheritance
+# Наследование свойств
 
-Property inheritance is used to propagate changes of unmodified properties from a prefab to its instances. For example,
-you can change scale of a node in a prefab and its instances will have the same scale too, unless the scale is
-set explicitly in an instance. Such feature allows you to tweak instances, add some unique details to them, but take
-general properties from parent prefabs.
+Наследование свойств используется для распространения изменений неизменённых свойств из префаба на его экземпляры. Например, вы можете изменить масштаб узла в префабе, и его экземпляры также будут иметь тот же масштаб, если только масштаб не задан явно в экземпляре. Такая функция позволяет вам настраивать экземпляры, добавлять к ним некоторые уникальные детали, но брать общие свойства из родительских префабов.
 
-Property inheritance works for prefab hierarchies of any depth, this means that you can create something like this:
-a room prefab can have multiple instances of various furniture prefabs in it, while the furniture prefabs can also be
-constructed from other prefabs and so on. In this case if you modify a property in one of the prefabs in the chain, 
-all instance will immediately sync their unmodified properties. 
+Наследование свойств работает для иерархий префабов любой глубины, это означает, что вы можете создать что-то вроде этого: префаб комнаты может содержать несколько экземпляров различных префабов мебели, в то время как префабы мебели также могут быть построены из других префабов и так далее. В этом случае, если вы измените свойство в одном из префабов в цепочке, все экземпляры немедленно синхронизируют свои неизменённые свойства.
 
-## How To Create Inheritable Properties
+## Как создать наследуемые свойства
 
-It is possible to use property inheritance for script variables. To make a property of your script inheritable, all you
-need is to wrap its value using `InheritableVariable` wrapper.
+Можно использовать наследование свойств для переменных скриптов. Чтобы сделать свойство вашего скрипта наследуемым, всё, что вам нужно, — это обернуть его значение с помощью обёртки `InheritableVariable`.
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/inheritance.rs:my_script}}
 ```
 
-The engine will automatically resolve the correct value for the property when a scene with the script is loaded. If your
-property was modified, then its value will remain the same, it won't be overwritten by parent's value. Keep in mind,
-that the type of the inheritable variable must be cloneable and support reflection.
+Движок автоматически определит правильное значение для свойства при загрузке сцены со скриптом. Если ваше свойство было изменено, то его значение останется прежним, оно не будет перезаписано значением из родительского префаба. Имейте в виду, что тип наследуемой переменной должен быть клонируемым и поддерживать рефлексию.
 
-`InheritableVariable` implements the `Deref<Target = T> + DerefMut` traits, this means that any access via the `DerefMut` trait
-will mark the property as modified. This could be undesired in some cases so `InheritableVariable` supports special `xxx_silent` 
-methods that don't touch the internal modifiers and allows you to substitute the value with some other "silently" -
-without marking the variable as modified.
+`InheritableVariable` реализует трейты `Deref<Target = T> + DerefMut`, это означает, что любой доступ через трейт `DerefMut` пометит свойство как изменённое. Это может быть нежелательно в некоторых случаях, поэтому `InheritableVariable` поддерживает специальные методы `xxx_silent`, которые не затрагивают внутренние модификаторы и позволяют вам заменить "незаметно" значение на другое — без пометки переменной как изменённой.
 
-## Which Fields Should Be Inheritable?
+## Какие поля должны быть наследуемыми?
 
-Inheritable variables intended to be "atomic" - it means that the variable stores some simple variable (`f32`, `String`,
-`Handle<Node>`, etc.). While it is possible to store "compound" variables (`InheritableVariable<YourStruct>`), it is
-not advised because of inheritance mechanism. When the engine sees inheritable variable, it searches the same variable
-in a parent entity and copies its value to the child, thus completely replacing its content. In this case, even if you
-have inheritable variables inside compound field, they won't be inherited correctly. Let's demonstrate this in the
-following code snippet:
+Наследуемые переменные предназначены для хранения "атомарных" данных — это означает, что переменная хранит какое-то простое значение (`f32`, `String`, `Handle<Node>` и т.д.). Хотя возможно хранить "составные" переменные (`InheritableVariable<YourStruct>`), это не рекомендуется из-за механизма наследования. Когда движок видит наследуемую переменную, он ищет ту же переменную в родительской сущности и копирует её значение в дочернюю, полностью заменяя её содержимое. В этом случае, даже если у вас есть наследуемые переменные внутри составного поля, они не будут наследоваться корректно. Давайте продемонстрируем это в следующем фрагменте кода:
 
 ```rust,no_run
 {{#include ../code/snippets/src/scene/inheritance.rs:complex_inheritance}}
 ```
 
-This code snippet should clarify, that inheritable fields should contain some "simple" data, and almost never - complex
-structs.
+Этот фрагмент кода должен прояснить, что наследуемые поля должны содержать "простые" данные и в случае крайней необходимости — сложные структуры.
 
-## Editor
+## Редактор
 
-The editor wraps all inheritable properties in a special widget that supports property reversion. Reversion allows you
-to drop current changes and take the parent's property value. This is useful if you want a property to inherit its parent's 
-value. In the Inspector it looks like this:
+Редактор оборачивает все наследуемые свойства в специальный виджет, который поддерживает отмену изменений. Отмена позволяет вам сбросить текущие изменения и взять значение свойства из родительского префаба. Это полезно, если вы хотите, чтобы свойство наследовало значение из родительского префаба. В Инспекторе это выглядит так:
 
-![revert](./revert.png)
+![Отмена](./revert.png)
 
-Clicking on the `<` button will take the value from the parent prefab and the property won't be marked as modified anymore. In case
-there is no parent prefab, the button will just drop `modified` flag.
+Нажатие на кнопку `<` возьмёт значение из родительского префаба, и свойство больше не будет помечено как изменённое. В случае, если нет родительского префаба, кнопка просто сбросит флаг `modified`.

@@ -1,19 +1,15 @@
-# Transformation
+# Трансформация
 
-Transformation (transform for short) - is a special entity that changes coordinate system from one to another. It is used
-primarily in scene nodes to store their position/rotation/scale/pivots/etc. Fyrox has quite complex transformations, that
-supports:
+Трансформация — это специальная сущность, которая изменяет систему координат из одной в другую. Она используется в основном в узлах сцены для хранения их положения/вращения/масштаба/опорных точек и т.д. Fyrox имеет довольно сложные трансформации, которые поддерживают:
 
-1) Position (`T`)
-2) Rotation (`R`)
-3) Scale (`S`)
-4) Pre-rotation (`Rpre`) 
-5) Post-rotation (`Rpost`) 
-6) Rotation Pivot (`Rp`)
-7) Rotation Offset (`Roff`)
-8) Scaling Offset (`Soff`)
-9) Scaling Pivot (`Sp`)
+1) Позицию (`T`)
+2) Вращение (`R`)
+3) Масштаб (`S`)
+4) Предварительное вращение (`Rpre`)
+5) Пост-вращение (`Rpost`)
+6) Опорную точку вращения (`Rp`)
+7) Смещение вращения (`Roff`)
+8) Смещение масштабирования (`Soff`)
+9) Опорную точку масштабирования (`Sp`)
 
-Final transformation matrix will be `Transform = T * Roff * Rp * Rpre * R * Rpost * Rp⁻¹ * Soff * Sp * S * Sp⁻¹`. In 99.9%
-cases first three are enough for pretty much every task. Other six components used for specific stuff (mainly for nodes
-that imported from FBX file format).
+Итоговая матрица трансформации будет `Transform = T * Roff * Rp * Rpre * R * Rpost * Rp⁻¹ * Soff * Sp * S * Sp⁻¹`. В 99.9% случаев первых трёх компонентов достаточно для практически любой задачи. Остальные шесть компонентов используются для специфических задач (в основном для узлов, импортированных из формата FBX).

@@ -1,105 +1,64 @@
-# Borrow Checker
+# Проверка заимствований (Borrow Checker)
 
-Rust has a [famous borrow checker](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html), that became a 
-sort of horror story for newcomers. It usually treated like an enemy, that prevents your from writing anything 
-useful as you may get used in other languages. In fact, it is a very useful part of Rust that proves correctness
-of your program and does not let you doing nasty things like memory corruption, data races, etc. This chapter 
-explains how Fyrox solves the most common borrowing issues and makes game development as easy as in any other 
-game engine.
+Rust имеет [знаменитый механизм проверки заимствований](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html), который стал своего рода страшилкой для новичков. Его часто воспринимают как врага, который мешает писать что-то полезное, как вы могли привыкнуть в других языках. На самом деле, это очень полезная часть Rust, которая доказывает корректность вашей программы и не позволяет вам делать неприятные вещи, такие как повреждение памяти, гонки данных и т.д. В этой главе объясняется, как Fyrox решает наиболее распространённые проблемы с заимствованиями и делает разработку игр такой же простой, как и в любом другом игровом движке.
 
-## Multiple Borrowing
+## Множественное заимствование
 
-When writing a script logic there is often a need to do a multiple borrowing of some data, usually it is other scene
-nodes. In normal circumstances you can borrow each node one-by-one, but in other cases you can't do an action 
-without borrowing two or more nodes simultaneously. In this case you can use multi-borrowing:
+При написании логики скриптов часто возникает необходимость в множественном заимствовании некоторых данных, обычно это другие узлы сцены. В нормальных обстоятельствах вы можете заимствовать каждый узел по одному, но в других случаях вы не можете выполнить действие без одновременного заимствования двух или более узлов. В этом случае вы можете использовать множественное заимствование:
 
 ```rust
 {{#include ../code/snippets/src/borrowck/mod.rs:synthetic_example}}
 ```
 
-As you can see, you can borrow multiple nodes at once with no compilation errors. Borrowing rules in this case
-are enforced at runtime. They're the same as standard Rust borrowing rules:
+Как видите, вы можете заимствовать несколько узлов одновременно без ошибок компиляции. Правила заимствования в этом случае применяются во время выполнения. Они такие же, как стандартные правила заимствования в Rust:
 
-1) You can have infinite number of immutable references to the same object.
-2) You can have only one mutable reference to the same object.
+1) Вы можете иметь бесконечное количество неизменяемых ссылок на один и тот же объект.
+2) Вы можете иметь только одну изменяемую ссылку на один и тот же объект.
 
-Multi-borrow context provides detailed error messages for cases when borrowing has failed. For example, it will 
-tell you if you're trying to mutably borrow an object, that was already borrowed as immutable (and vice versa).
-It also provides handle validation and will tell you what's wrong with it. It could be either invalid index of it,
-or the generation. The latter means that the object at the handle was changed and the handle is invalid.
+Контекст множественного заимствования предоставляет подробные сообщения об ошибках для случаев, когда заимствование не удалось. Например, он сообщит вам, если вы пытаетесь заимствовать объект для изменения, который уже был заимствован как неизменяемый (и наоборот). Он также проверяет валидность дескрипторов и сообщит, что с ними не так. Это может быть либо неверный индекс, либо номер поколения. Последнее означает, что объект по этому дескриптору был изменён, и дескриптор стал недействительным.
 
-The previous example looks kinda synthetic and does not show the real-world code that could lead to borrowing 
-issues. Let's fix this. Imagine that you're making a shooter, and you have bots, that can follow and attack 
-targets. Then the code could look like this: 
+Предыдущий пример выглядит несколько синтетическим и не показывает реальный код, который может привести к проблемам с заимствованием. Давайте это исправим. Представьте, что вы делаете шутер, и у вас есть боты, которые могут следовать за целями и атаковать их. Тогда код может выглядеть так:
 
 ```rust
 {{#include ../code/snippets/src/borrowck/mod.rs:bot_example}}
 ```
 
-As you can see, for this code to compile we need to borrow at least two nodes simultaneously: the node with `Bot`
-script and the `target` node. This is because we're calculating distance between the two nodes to switch 
-animations accordingly (attack if the target is close enough).
+Как вы можете видеть, для того чтобы этот код скомпилировался, нам нужно заимствовать как минимум два узла одновременно: узел с скриптом `Bot` и узел `target`. Это потому, что мы вычисляем расстояние между двумя узлами, чтобы переключать анимации соответствующим образом (атаковать, если цель достаточно близко).
 
-As pretty much any approach, this one is not ideal and comes with its own pros and cons. The pros are quite 
-simple:
+Как и любой другой подход, этот не идеален и имеет свои плюсы и минусы. Плюсы довольно просты:
 
-- No compilation errors - sometimes Rust is too strict about borrowing rules, and valid code does not pass its
-checks.
-- Better ergonomics - no need to juggle with temporary variable here and there to perform an action.
+- Нет ошибок компиляции — иногда Rust слишком строг к правилам заимствования, и корректный код не проходит его проверки.
+- Лучшая эргономика — нет необходимости жонглировать временными переменными здесь и там для выполнения действия.
 
-The cons are:
+Минусы:
 
-- Multi-borrowing is slightly slower (~1-4% depending on your use case) - this happens because the 
-multi-borrowing context checks borrowing rules at runtime.
+- Множественное заимствование немного медленнее (~1-4% в зависимости от вашего случая использования) — это происходит потому, что контекст множественного заимствования проверяет правила заимствования во время выполнения.
 
+## Передача сообщений
 
-## Message Passing
-
-Sometimes the code becomes so convoluted, so it is simply hard to maintain and understand what it is doing. 
-This happens when code coupling get to a certain point, which requires very broad context for the code to
-be executed. For example, if bots in your game have weapons it is so tempting to just borrow the weapon 
-and call something like `weapon.shoot(..)`. When your weapon is simple then it might work fine, however when 
-your game gets bigger and weapons get new features simple `weapon.shoot(..)` could be not enough. It could be
-because `shoot` method get more and more arguments or by some other reason. This is quite common case and in
-general when your code become tightly coupled it becomes hard to maintain it and what's more important - it
-could easily result in compilation errors, that comes from borrow checker. To illustrate this, let's look at
-this code:
+Иногда код становится настолько запутанным, что его становится трудно поддерживать и понимать, что он делает. Это происходит, когда связность кода достигает определённого уровня, что требует очень широкого контекста для выполнения кода. Например, если у ботов в вашей игре есть оружие, то очень заманчиво просто заимствовать оружие и вызвать что-то вроде `weapon.shoot(..)`. Когда ваше оружие простое, это может работать нормально, однако, когда ваша игра становится больше, а оружие получает новые функции, простого `weapon.shoot(..)` может быть недостаточно. Это может быть потому, что метод `shoot` получает всё больше аргументов или по какой-то другой причине. Это довольно распространённый случай, и в целом, когда ваш код становится тесно связанным, его становится трудно поддерживать, и что более важно — это может легко привести к ошибкам компиляции, которые возникают из-за проверки заимствований. Чтобы проиллюстрировать это, давайте посмотрим на этот код:
 
 ```rust
 {{#include ../code/snippets/src/borrowck/without_message_passing.rs:without_message_passing}}
 ```
 
-This is probably one of the typical implementations of shooting in games - you cast a ray from the weapon
-and if it hits a bot, you're applying some damage to it. In this case bots can also shoot, and this is where
-borrow checker again gets in our way. If you try to uncomment the 
-`// weapon.shoot(ctx.handle, &mut ctx.scene.graph);` line you'll get a compilation error, that tells you that 
-`ctx.scene.graph` is already borrowed. It seems that we've stuck, and we need to somehow fix this issue.
-We can't use multi-borrowing in this case, because it still enforces borrowing rules and instead of compilation
-error, you'll runtime error.
+Это, вероятно, одна из типичных реализаций стрельбы в играх — вы выпускаете луч из оружия, и если он попадает в бота, вы наносите ему некоторый урон. В этом случае боты также могут стрелять, и здесь проверка заимствований снова становится на нашем пути. Если вы попытаетесь раскомментировать строку `// weapon.shoot(ctx.handle, &mut ctx.scene.graph);`, вы получите ошибку компиляции, которая говорит вам, что `ctx.scene.graph` уже заимствован. Кажется, что мы застряли, и нам нужно как-то исправить эту проблему. Мы не можем использовать множественное заимствование в этом случае, потому что оно всё ещё применяет правила заимствования, и вместо ошибки компиляции вы получите ошибку во время выполнения.
 
-To solve this, you can use well-known message passing mechanism. The core idea of it is to not call methods
-immediately, but to collect all the needed data for the call and send it an object, so it can do the call later.
-Here's how it will look:
+Чтобы решить эту проблему, вы можете использовать хорошо известный механизм передачи сообщений. Основная идея заключается в том, чтобы не вызывать методы сразу, а собирать все необходимые данные для вызова и отправлять их объекту, чтобы он мог выполнить вызов позже. Вот как это будет выглядеть:
 
 ```rust
 {{#include ../code/snippets/src/borrowck/message_passing.rs:message_passing}}
 ```
 
-The weapon now subscribes to `ShootMessage` and listens to it in `on_message` method and from there it can
-perform the actual shooting without any borrowing issues. The bot now just sends the `ShootMessage` instead of
-borrowing the weapon trying to call `shoot` directly. The messages do not add any one-frame delay as you might
-think, they're processed in the same frame so there's no one-or-more frames desynchronization.
+Теперь оружие подписывается на `ShootMessage` и слушает его в методе `on_message`, и оттуда оно может выполнить фактическую стрельбу без каких-либо проблем с заимствованием. Бот теперь просто отправляет `ShootMessage` вместо того, чтобы заимствовать оружие и пытаться вызвать `shoot` напрямую. Сообщения не добавляют задержку в один кадр, как вы могли подумать, они обрабатываются в том же кадре, поэтому нет десинхронизации на один или более кадров.
 
-This approach with messages has its own pros and cons. The pros are quite significant: 
+Этот подход с сообщениями имеет свои плюсы и минусы. Плюсы довольно значительны:
 
-- Decoupling - coupling is now very loose and done mostly on message side.
-- Easy to refactor - since the coupling is loose, you can refactor the internals with low chance of breaking
-existing code, that could otherwise be done because of intertwined and convoluted code.
-- No borrowing issues - the method calls are done in different places and there's no lifetime collisions.
-- Easy to write unit and integration tests - this comes from loose coupling. 
+- Разделение — связность теперь очень слабая и в основном осуществляется на стороне сообщений.
+- Легкость рефакторинга — поскольку связность слабая, вы можете рефакторить внутренности с низкой вероятностью сломать существующий код, что могло бы произойти из-за запутанного и сложного кода.
+- Нет проблем с заимствованием — вызовы методов выполняются в разных местах, и нет конфликтов времени жизни.
+- Легкость написания модульных и интеграционных тестов — это вытекает из слабой связности.
 
-The cons are the following: 
+Минусы следующие:
 
-- Message passing is slightly slower than direct method calls (~1-7% depending on your use case) - you should 
-keep message granularity at a reasonable level. Do not use message passing for tiny changes, it will most likely make 
-your game slower.
+- Передача сообщений немного медленнее, чем прямые вызовы методов (~1-7% в зависимости от вашего случая использования) — вы должны поддерживать гранулярность сообщений на разумном уровне. Не используйте передачу сообщений для небольших изменений, это, скорее всего, сделает вашу игру медленнее.
